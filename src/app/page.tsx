@@ -1,5 +1,12 @@
-import Image from "next/image";
+import PreLiveFooter from "./components/layout/PreLiveFooter";
+import PreLiveHeader from "./components/layout/PreLiveHeader";
+import StreamView from "./components/layout/StreamView";
 
 export default function Home() {
-  return <div className="flex flex-col w-full h-full justify-center items-center">lalalalala</div>;
+  return (
+    <StreamView>
+      <PreLiveHeader className="absolute top-0" />
+      <PreLiveFooter className="absolute bottom-0" />
+    </StreamView>
+  );
 }
