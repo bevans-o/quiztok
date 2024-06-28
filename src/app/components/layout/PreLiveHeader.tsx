@@ -1,6 +1,6 @@
 import { cn } from "@/app/lib/util";
 import React from "react";
-import ActivityPreview from "../ui/ActivityPreview";
+import StreamDetails from "../ui/StreamDetails";
 
 function PreLiveHeader({ className }: { className?: string }) {
   return (
@@ -27,12 +27,12 @@ function PreLiveHeader({ className }: { className?: string }) {
 
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
-            <path d="M1 1.5L16 16.5M16 1.5L0.999968 16.5" stroke="white" stroke-width="1.5" />
+            <path d="M1 1.5L16 16.5M16 1.5L0.999968 16.5" stroke="white" strokeWidth="1.5" />
           </svg>
         </div>
       </div>
 
-      <ActivityPreview streamTitle="Jimbo's Tuesday Trivia Frenzy!!!" />
+      <StreamDetails streamTitle="Jimbo's Tuesday Trivia Frenzy!!!" />
     </div>
   );
 }

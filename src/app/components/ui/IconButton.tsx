@@ -141,7 +141,7 @@ function IconButton({ label, icon, highlight = false }: { label: string; icon: s
           </svg>
         )}
       </div>
-      <div className="text-xs font-semibold text-center text-nowrap">{label}</div>
+      <div className="text-xs font-semibold text-center text-nowrap select-none">{label}</div>
     </div>
   );
 }

@@ -15,7 +15,7 @@ function PreLiveFooter({ className }: { className?: string }) {
       <div className="flex flex-wrap justify-center items-center max-w-[24rem] gap-x-10 gap-y-4">
         <IconButton label="Dual" icon="dual" />
         <IconButton label="Enhance" icon="enhance" />
-        <a>
+        <a href="pre/select">
           <IconButton label="Activities" icon="activities" highlight />
         </a>
         <IconButton label="Effects" icon="effects" />

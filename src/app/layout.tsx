@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import MobileFrame from "./components/layout/MobileFrame";
 
-const typeface = Manrope({ subsets: ["latin"] });
+const typeface = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "QuizTok",
