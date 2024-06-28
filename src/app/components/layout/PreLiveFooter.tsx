@@ -3,8 +3,15 @@ import React from "react";
 import Button from "../ui/Button";
 import StaticModeSwiper from "../ui/StaticModeSwiper";
 import IconButton from "../ui/IconButton";
+import Link from "next/link";
 
-function PreLiveFooter({ className }: { className?: string }) {
+function PreLiveFooter({
+  className,
+  onSelectActivities = () => {},
+}: {
+  className?: string;
+  onSelectActivities?: () => void;
+}) {
   return (
     <div
       className={cn(
@@ -15,9 +22,9 @@ function PreLiveFooter({ className }: { className?: string }) {
       <div className="flex flex-wrap justify-center items-center max-w-[24rem] gap-x-10 gap-y-4">
         <IconButton label="Dual" icon="dual" />
         <IconButton label="Enhance" icon="enhance" />
-        <a href="pre/select">
+        <button onClick={onSelectActivities}>
           <IconButton label="Activities" icon="activities" highlight />
-        </a>
+        </button>
         <IconButton label="Effects" icon="effects" />
         <IconButton label="Settings" icon="settings" />
         <IconButton label="Share" icon="share" />
@@ -26,7 +33,9 @@ function PreLiveFooter({ className }: { className?: string }) {
         <IconButton label="Subscription" icon="subscription" />
         <IconButton label="Promote" icon="promote" />
       </div>
-      <Button>Go LIVE</Button>
+      <Link href="live">
+        <Button>Go LIVE</Button>
+      </Link>
       <StaticModeSwiper />
     </div>
   );

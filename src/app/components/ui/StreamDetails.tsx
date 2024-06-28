@@ -10,7 +10,7 @@ function StreamDetails({ streamTitle, activity }: { streamTitle?: string; activi
         </div>
         <div className="flex flex-col gap-[2px]">
           <div className="text-neutral-200 font-bold">{streamTitle}</div>
-          <div className="text-xs">{activity ? "Activity" : "No activity selected."}</div>
+          <div className="text-xs">{activity ? activity.name : "No activity selected."}</div>
         </div>
       </div>
       <div className="flex justify-between gap-2 text-[13px]">
