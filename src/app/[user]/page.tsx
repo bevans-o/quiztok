@@ -11,7 +11,7 @@ function Page({ params }: { params: { user: string } }) {
   return (
     <div className="w-full h-full bg-gradient-to-t from-rose-700/10 to-rose-700/0 flex flex-col gap-16 justify-center items-center">
       <div className="text-xl font-bold text-neutral-200">
-        Joining <span className="text-rose-400">{params.user}'s</span> stream
+        Joining <span className="text-rose-400">{params.user}&apos;s</span> stream
       </div>
       <div className="flex flex-col gap-2 justify-center items-center text-neutral-400">
         <div>Enter a username.</div>
