@@ -43,8 +43,8 @@ function ActivityModal({
               </button>
 
               {activities.map((activity, i) => (
-                <div onClick={() => onSelect(activity)}>
-                  <ActivityDetails activity={activity} key={i} />
+                <div onClick={() => onSelect(activity)} key={i}>
+                  <ActivityDetails activity={activity} />
                 </div>
               ))}
             </div>
