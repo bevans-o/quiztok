@@ -1,15 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import Button from "./components/ui/Button";
-import { cn } from "./lib/util";
 import Link from "next/link";
+import React, { useState } from "react";
+import Button from "../components/ui/Button";
+import { cn } from "../lib/util";
 
-export default function Home() {
+function Page({ params }: { params: { user: string } }) {
   const [name, setName] = useState<string>("");
 
   return (
     <div className="w-full h-full bg-gradient-to-t from-rose-700/10 to-rose-700/0 flex flex-col gap-16 justify-center items-center">
+      <div className="text-xl font-bold text-neutral-200">
+        Joining <span className="text-rose-400">{params.user}'s</span> stream
+      </div>
       <div className="flex flex-col gap-2 justify-center items-center text-neutral-400">
         <div>Enter a username.</div>
         <input
@@ -20,15 +23,12 @@ export default function Home() {
       </div>
 
       <div className={cn("flex flex-col gap-2 transition-opacity", name ? "" : "opacity-20")}>
-        <Link href={`/${name}/view`}>
+        <Link href={`/${name}/view/${params.user}`}>
           <Button disabled={!name}>Join</Button>
-        </Link>
-        <Link href={`/${name}/host/pre`}>
-          <Button disabled={!name} intent={"secondary"}>
-            Host
-          </Button>
         </Link>
       </div>
     </div>
   );
 }
+
+export default Page;
