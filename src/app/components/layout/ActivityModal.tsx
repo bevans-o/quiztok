@@ -37,7 +37,7 @@ function ActivityModal({
             <div className="flex flex-col gap-1 ">
               <button
                 onClick={() => onSelect(undefined)}
-                className="border border-neutral-200 p-2 hover:bg-neutral-100 transition-colors"
+                className="border border-neutral-200 p-2 hover:bg-neutral-100 transition-colors rounded"
               >
                 <Detail>No Activity</Detail>
               </button>
