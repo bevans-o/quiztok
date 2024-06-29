@@ -10,7 +10,9 @@ function MobileFrame({ children }: { children?: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="hidden sm:block absolute top-2 left-2 font-bold text-neutral-600">TikTokTactivities</div>
+      <div className="hidden sm:block absolute top-2 left-2 font-bold text-neutral-600">
+        TikTokTactivities / QuizTok
+      </div>
     </main>
   );
 }
