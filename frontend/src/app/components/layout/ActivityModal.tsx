@@ -24,7 +24,7 @@ function ActivityModal({
           <div className="w-full flex justify-between items-center">
             <Heading>Select an Activity</Heading>
             <Link
-              href={`/${user}/activity/build`}
+              href={`/${user}/activity/build/type`}
               className="bg-neutral-200 w-8 h-8 rounded-full flex justify-center items-center hover:bg-neutral-300 transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
