@@ -10,6 +10,7 @@ const buttonVariants = cva("px-8 py-3 rounded-lg font-semibold tracking-wide tra
     },
     size: {
       large: "min-w-64",
+      full: "w-full",
     },
   },
   defaultVariants: {
@@ -26,7 +27,7 @@ export interface ButtonProps extends VariantProps<typeof buttonVariants>, Button
 
 function Button({ className, onClick = () => {}, children, intent, size, ...props }: ButtonProps) {
   return (
-    <button className={cn(buttonVariants({ intent, size }), className)} {...props}>
+    <button className={cn(buttonVariants({ intent, size }), className, props.disabled ? "opacity-60" : "")} {...props}>
       {children}
     </button>
   );
