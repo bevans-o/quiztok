@@ -3,10 +3,10 @@ import React, { ReactNode } from "react";
 
 function Layout({ children }: { children?: ReactNode }) {
   return (
-    <div className="w-full h-full bg-white flex flex-col max-h-screen">
+    <div className="w-full h-full bg-white flex flex-col ">
       <PageHeader title="New activity" />
 
-      <div className="grow w-full">{children}</div>
+      <div className="grow w-full min-h-0">{children}</div>
     </div>
   );
 }

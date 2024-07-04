@@ -10,7 +10,7 @@ function ToggleBubbles({ options, onSelect = () => {} }: { options: string[]; on
 
   return (
     <div className="w-full overflow-x-scroll py-4">
-      <div className="flex gap-2 px-4 w-fit">
+      <div className="flex gap-2 px-6 w-fit">
         {options.map((option, index) => (
           <button
             className={cn(
