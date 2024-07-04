@@ -103,7 +103,13 @@ function getActivity(activityId: string) {
   return activity
 }
 
-
+function getBadge(badgeId: string) {
+  const reference = ref(db, 'badges/' + badgeId);
+  var badge;
+  on(reference, 'value', function(snapshot: any) {
+    badge = snapshot.val();
+  })
+}
 
 writeUserData("andreawu", "awu", "myemail@me.com", "myimageurl");
 
