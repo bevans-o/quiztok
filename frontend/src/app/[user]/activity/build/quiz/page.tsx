@@ -2,21 +2,27 @@
 
 import Button from "@/app/components/ui/Button";
 import BuilderQuestion from "@/app/components/ui/builder/BuilderQuestion";
-import { QuizActivity } from "@/app/lib/activity";
+import { QuizActivity, QuizQuestion } from "@/app/lib/activity";
 import React, { useState } from "react";
 
 function Page({ params }: { params: { user: string } }) {
   const [quiz, setQuiz] = useState<QuizActivity>({
     id: "",
     name: "",
-    sections: [{ type: "option", points: 1, options: [{ text: "A", correct: true }, { text: "B" }, { text: "C" }] }],
+    sections: [
+      { type: "option", text: "", points: 1, options: [{ text: "A", correct: true }, { text: "B" }, { text: "C" }] },
+    ],
     date: new Date(Date.now()),
     author: params.user,
+    type: "quiz",
   });
 
+  const handleQuestionChange = (question: QuizQuestion, index: number) => {};
+  const handleQuestionDeletion = (index: number) => {};
+
   return (
-    <>
-      <div className="flex flex-col w-full relative overflow-hidden">
+    <div className="flex flex-col h-full w-full relative overflow-hidden justify-between">
+      <div className="flex flex-col grow overflow-y-scroll">
         <div className="p-6">
           <input
             value={quiz.name}
@@ -27,8 +33,13 @@ function Page({ params }: { params: { user: string } }) {
         </div>
 
         <div className="flex flex-col">
-          {quiz.sections.map((section, index) => (
-            <BuilderQuestion key={index} />
+          {quiz.sections.map((question, index) => (
+            <BuilderQuestion
+              question={question}
+              key={index}
+              index={index}
+              onChange={(q: QuizQuestion, i: number) => handleQuestionChange(q, i)}
+            />
           ))}
         </div>
 
@@ -42,6 +53,7 @@ function Page({ params }: { params: { user: string } }) {
                   ...quiz.sections,
                   {
                     type: "option",
+                    text: "",
                     points: 1,
                     options: [{ text: "A", correct: true }, { text: "B" }, { text: "C" }],
                   },
@@ -58,7 +70,7 @@ function Page({ params }: { params: { user: string } }) {
           Done
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
