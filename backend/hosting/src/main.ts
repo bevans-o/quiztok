@@ -30,15 +30,17 @@ function writeUserData(userId: string, name: string, email: string, imageUrl: st
   });
 }
 
-function writeActivity(activityId: string, activityName: string, options: string, questions: any, questionsNo: number, badges: any, status: boolean) {
+function writeActivity(activityId: string, activityName: string, type: string, questions: any, questionsNo: number, badges: any, status: boolean, date: Date, author: string) {
   const reference = ref(db, 'activity/' + activityId);
 
   set(reference, {
     activityName: activityName,
-    options: options,
+    type: type,
     questionsNo: questionsNo,
     badges: badges,
-    status: status
+    status: status,
+    date: date,
+    author: author
   })
   questions.forEach((element: { index: number; question: string; answer: string; options: any; }) => {
     writeQuestion(activityId, element.index, element.question, element.answer, element.options)
