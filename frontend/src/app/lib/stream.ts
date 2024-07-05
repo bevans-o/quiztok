@@ -37,6 +37,7 @@ export function useStream(streamId: string) {
           viewerCount: data.viewerCount,
           userAnswers: data.userAnswers,
           scores: data.scores,
+          badges: data.badges,
         });
       }
     });
