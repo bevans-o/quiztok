@@ -54,10 +54,31 @@ const sample: QuizActivity = {
   type: "quiz",
 };
 
-// MOCK: post
+// MOCK: post, end activity details to db
 export function postActivity(activity: Activity) {
   console.log(`POST Activity: ${activity.name}`);
   console.log(activity);
+
+  try { 
+    const response = await fetch('/api/activity', {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(activity),
+    });
+    if (response.ok) {
+      console.log(`Activity ${activity.name} posted successfully`);
+      // Optionally, return response data or handle success
+    } else {
+      console.error('Failed to post activity:', response.statusText);
+      // Handle error, show message, retry logic, etc.
+    }
+  } catch (error) {
+    console.error('Error posting activity:', error);
+    // Handle network errors or other exceptions
+  }
+
 }
 
 // MOCK: get all
