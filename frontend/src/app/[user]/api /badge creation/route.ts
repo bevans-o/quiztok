@@ -44,7 +44,7 @@ export async function badgeCreation(request: Request) {
     headers: {
       'Content-Type': 'application/json',
       'API-Key': 'AIzaSyCYJJkqJ8qYFMI6aeLfh9mcHR8Y9iEbEP0',
-    }
+    },
     body: JSON.stringify({
       badgeId: badgeId,
       badgeColour: badgeColour,
@@ -74,7 +74,7 @@ export async function badgeRewards(request: Request) {
 
 // get function for badge creation and distribution 
 
-export async function badgeCreation(request: Request) {
+export async function badgeDistribution(request: Request) {
   const formData = await request.formData()
   const badgeName = formData.get('badgename')
   const badgeId = formData.get('badgeid')
@@ -85,7 +85,7 @@ export async function badgeCreation(request: Request) {
     headers: {
       'Content-Type': 'application/json',
       'API-Key': 'AIzaSyCYJJkqJ8qYFMI6aeLfh9mcHR8Y9iEbEP0',
-    }
+    },
     body: JSON.stringify({
       badgeId: badgeId,
       badgeUser: badgeUser,
