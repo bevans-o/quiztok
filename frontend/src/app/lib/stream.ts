@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { db } from '../firebase'; // wherever the db is configured 
 import { Activity, QuizQuestion } from "./activity";
 import { Answer } from "./answer";
+import { Badge } from "./badge";
 
 export type Stream = {
   host: string;
@@ -10,6 +11,7 @@ export type Stream = {
   viewerCount: number;
   userAnswers: Map<string, Answer>;  // Map from user ID to their Answer
   scores: LeaderboardData;
+  badges: Badge;
 };
 
 export type LeaderboardData = { // contains keys userID with name and score properties
