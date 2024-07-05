@@ -10,7 +10,7 @@ const badgeVariants = cva("flex justify-center items-center pr-2 pl-1 border rou
       rose: "bg-rose-600 text-neutral-50 border-rose-500",
       blue: "bg-blue-600 text-neutral-50 border-blue-500",
       green: "bg-green-600 text-neutral-50 border-green-500",
-      yellow: "bg-yellow-500 text-neutral-800 border-yellow-400",
+      yellow: "bg-yellow-600 text-neutral-50 border-yellow-500",
       teal: "bg-teal-600 text-neutral-50 border-teal-500",
       purple: "bg-purple-600 text-neutral-50 border-purple-500",
     },
