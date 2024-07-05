@@ -2,23 +2,36 @@
 
 import Button from "@/app/components/ui/Button";
 import BuilderQuestion from "@/app/components/ui/builder/BuilderQuestion";
-import { QuizActivity, QuizQuestion } from "@/app/lib/activity";
+import { postActivity, QuizActivity, QuizQuestion } from "@/app/lib/activity";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 function Page({ params }: { params: { user: string } }) {
+  const router = useRouter();
+
   const [quiz, setQuiz] = useState<QuizActivity>({
     id: "",
     name: "",
     sections: [
-      { type: "option", text: "", points: 1, options: [{ text: "A", correct: true }, { text: "B" }, { text: "C" }] },
+      { type: "option", text: "", points: 1, options: [{ text: "", correct: true }, { text: "" }, { text: "" }] },
     ],
     date: new Date(Date.now()),
     author: params.user,
     type: "quiz",
   });
 
-  const handleQuestionChange = (question: QuizQuestion, index: number) => {};
-  const handleQuestionDeletion = (index: number) => {};
+  const handleQuestionChange = (question: QuizQuestion, index: number) => {
+    console.log(question);
+    const newSections = [...quiz.sections];
+    newSections[index] = question;
+
+    setQuiz({ ...quiz, sections: newSections });
+  };
+  const handleQuestionDeletion = (index: number) => {
+    const newSections = [...quiz.sections].filter((_, i) => i != index);
+
+    setQuiz({ ...quiz, sections: newSections });
+  };
 
   return (
     <div className="flex flex-col h-full w-full relative overflow-hidden justify-between">
@@ -39,6 +52,7 @@ function Page({ params }: { params: { user: string } }) {
               key={index}
               index={index}
               onChange={(q: QuizQuestion, i: number) => handleQuestionChange(q, i)}
+              onDelete={() => handleQuestionDeletion(index)}
             />
           ))}
         </div>
@@ -55,7 +69,7 @@ function Page({ params }: { params: { user: string } }) {
                     type: "option",
                     text: "",
                     points: 1,
-                    options: [{ text: "A", correct: true }, { text: "B" }, { text: "C" }],
+                    options: [{ text: "", correct: true }, { text: "" }, { text: "" }],
                   },
                 ],
               })
@@ -66,7 +80,14 @@ function Page({ params }: { params: { user: string } }) {
         </div>
       </div>
       <div className="w-full pt-4 pb-8 px-6 border-t-2 border-neutral-200 bg-white z-10">
-        <Button disabled={!(quiz.name && quiz.sections.length > 0)} size={"full"}>
+        <Button
+          disabled={!(quiz.name && quiz.sections.length > 0)}
+          size={"full"}
+          onClick={() => {
+            postActivity(quiz);
+            router.push(`/${params.user}/host/pre`);
+          }}
+        >
           Done
         </Button>
       </div>

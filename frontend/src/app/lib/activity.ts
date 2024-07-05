@@ -40,6 +40,7 @@ export type RankingQuestion = BaseQuizQuestion & {
   options: {
     text: string;
     value: number;
+    key: string;
   }[];
   type: "ranking";
 };

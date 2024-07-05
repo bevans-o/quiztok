@@ -22,10 +22,9 @@ const buttonVariants = cva("px-8 py-3 rounded-lg font-semibold tracking-wide tra
 export interface ButtonProps extends VariantProps<typeof buttonVariants>, ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
   children?: React.ReactNode;
-  onClick?: () => void;
 }
 
-function Button({ className, onClick = () => {}, children, intent, size, ...props }: ButtonProps) {
+function Button({ className, children, intent, size, ...props }: ButtonProps) {
   return (
     <button className={cn(buttonVariants({ intent, size }), className, props.disabled ? "opacity-60" : "")} {...props}>
       {children}

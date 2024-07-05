@@ -1,12 +1,18 @@
 "use client";
 
 import { cn } from "@/app/lib/util";
-import React, { useState } from "react";
+import React from "react";
 
-function ToggleBubbles({ options, onSelect = () => {} }: { options: string[]; onSelect?: (a: string) => void }) {
+function ToggleBubbles({
+  options,
+  selected,
+  onSelect = () => {},
+}: {
+  options: string[];
+  selected: string;
+  onSelect?: (a: string) => void;
+}) {
   if (options.length < 1) return null;
-
-  const [selected, setSelected] = useState<string>(options[0]);
 
   return (
     <div className="w-full overflow-x-scroll py-4">
@@ -20,12 +26,9 @@ function ToggleBubbles({ options, onSelect = () => {} }: { options: string[]; on
                 : "text-neutral-700 bg-white border-neutral-200"
             )}
             key={index}
-            onClick={() => {
-              setSelected(option);
-              onSelect(option);
-            }}
+            onClick={() => onSelect(option)}
           >
-            <span className=" text-nowrap">{option}</span>
+            <span className="text-nowrap capitalize">{option}</span>
           </button>
         ))}
       </div>

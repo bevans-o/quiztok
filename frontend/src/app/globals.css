@@ -20,3 +20,27 @@ main {
 ::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+.slider {
+  -webkit-appearance: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.slider::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  background: #e2e2e2;
+  outline: 1px solid #e0e0e0;
+  border-radius: 99999px;
+  height: 8px;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  background: #e11d48;
+  border-radius: 99999px;
+  translate: 0 -5px;
+  cursor: pointer;
+}
