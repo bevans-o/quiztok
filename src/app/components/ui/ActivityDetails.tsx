@@ -4,6 +4,7 @@ import Subheading from "./typography/Subheading";
 import Detail from "./typography/Detail";
 
 function ActivityDetails({ activity }: { activity: Activity }) {
+  console.log(activity);
   return (
     <div className="border border-neutral-200 rounded flex justify-between p-2 cursor-pointer hover:bg-neutral-100 transition-colors">
       <div className="flex flex-col justify-between gap-1">

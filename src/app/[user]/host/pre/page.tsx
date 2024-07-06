@@ -4,9 +4,8 @@ import ActivityModal from "@/app/components/layout/ActivityModal";
 import PreLiveFooter from "@/app/components/layout/PreLiveFooter";
 import PreLiveHeader from "@/app/components/layout/PreLiveHeader";
 import StreamView from "@/app/components/layout/StreamView";
-import { Activity, getActivity } from "@/app/lib/activity";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { Activity } from "@/app/lib/activity";
+import React, { useState } from "react";
 
 function Page({ params }: { params: { user: string } }) {
   const [activity, setActivity] = useState<Activity | undefined>(undefined);

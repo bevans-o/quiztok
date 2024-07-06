@@ -45,20 +45,7 @@ export type RankingQuestion = BaseQuizQuestion & {
   type: "ranking";
 };
 
-const sample: QuizActivity = {
-  id: "012345",
-  name: "Jimbo's Tuesday Trivia 25/06",
-  sections: [],
-  date: new Date(Date.now()),
-  author: "jimbo",
-  type: "quiz",
-};
-
-// MOCK: post, end activity details to db
 export async function postActivity(activity: Activity) {
-  console.log(`POST Activity: ${activity.name}`);
-  console.log(activity);
-
   try {
     const response = await fetch("/api/activity", {
       method: "POST",
@@ -80,15 +67,51 @@ export async function postActivity(activity: Activity) {
   }
 }
 
-// MOCK: get all
-export function getActivities(user: string | undefined): Activity[] {
-  if (!user) return [];
-  return [sample, sample, sample, sample, sample, sample, sample, sample, sample];
+export async function getActivities(user?: string): Promise<Activity[]> {
+  try {
+    const response = await fetch(`/api/activities${user ? `?user=${user}` : ""}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const activities = await response.json();
+
+      return activities.map((activity: Activity) => {
+        return { ...activity, date: new Date(activity.date) };
+      });
+    } else {
+      console.error("Failed to get activities: ", response.statusText);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error getting activities: ", error);
+  }
+
+  return [];
 }
 
-// MOCK: get one
-export function getActivity(id: string): Activity {
-  return sample;
+export async function getActivity(id: string): Promise<Activity | null> {
+  try {
+    const response = await fetch(`/api/activity?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const activity = (await response.json()) as Activity;
+      return activity;
+    } else {
+      console.error("Failed to get activity: ", response.statusText);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error getting activity: ", error);
+  }
+
+  return null;
 }
 
 export function getActivityTypeString(type: string): string {

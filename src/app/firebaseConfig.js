@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase } from 'firebase/database';
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -10,10 +10,10 @@ const firebaseConfig = {
   projectId: "quiztok-123c4",
   storageBucket: "quiztok-123c4.appspot.com",
   messagingSenderId: "878908069531",
-  appId: "1:878908069531:web:6acb14a2dc5642566d183e"
+  appId: "1:878908069531:web:6acb14a2dc5642566d183e",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-export { database }
+const database = getFirestore(app);
+export { database };

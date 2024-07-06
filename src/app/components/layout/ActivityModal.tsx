@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ModalWindow from "./ModalWindow";
 import Heading from "../ui/typography/Heading";
 import { Activity, getActivities } from "@/app/lib/activity";
@@ -15,12 +15,19 @@ function ActivityModal({
   onSelect?: (a: Activity | undefined) => void;
   onClose?: () => void;
 }) {
-  const activities = getActivities(user);
+  const [activities, setActivities] = useState<Activity[]>([]);
+
+  useEffect(() => {
+    getActivities().then((res) => {
+      console.log(res);
+      setActivities(res);
+    });
+  }, [setActivities]);
 
   return (
     <ModalWindow onClose={onClose}>
       <div className="w-full flex flex-col justify-between gap-4 min-h-80 pb-1 ">
-        <div className="w-full h-full flex flex-col gap-4 relative">
+        <div className="w-full h-full flex flex-col gap-4 relative grow">
           <div className="w-full flex justify-between items-center">
             <Heading>Select an Activity</Heading>
             <Link
@@ -33,7 +40,7 @@ function ActivityModal({
             </Link>
           </div>
 
-          <div className="overflow-y-scroll max-h-[24rem]">
+          <div className="overflow-y-scroll grow max-h-[24rem]">
             <div className="flex flex-col gap-1 ">
               <button
                 onClick={() => onSelect(undefined)}

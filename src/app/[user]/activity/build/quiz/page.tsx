@@ -21,7 +21,6 @@ function Page({ params }: { params: { user: string } }) {
   });
 
   const handleQuestionChange = (question: QuizQuestion, index: number) => {
-    console.log(question);
     const newSections = [...quiz.sections];
     newSections[index] = question;
 
