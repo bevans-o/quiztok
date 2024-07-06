@@ -20,9 +20,9 @@ function StreamDetails({
         <div className="w-12 h-12 rounded border-2 border-neutral-200 overflow-hidden">
           <img className="w-full h-full object-cover" src="/background.png" />
         </div>
-        <div className="flex flex-col gap-[2px] cursor-pointer" onClick={onClick}>
+        <div className="flex flex-col gap-[2px] cursor-pointer grow overflow-hidden" onClick={onClick}>
           <div className="text-neutral-200 font-bold">{streamTitle}</div>
-          <div className="text-xs flex items-center gap-2">
+          <div className="text-xs flex items-center gap-2  grow">
             {activity ? activity.name : "No activity selected."}
             {badge && <Badge {...badge} size="small" />}
           </div>

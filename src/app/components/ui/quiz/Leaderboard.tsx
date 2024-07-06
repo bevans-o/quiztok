@@ -17,17 +17,20 @@ function Leaderboard({ stream }: { stream: Stream }) {
   return (
     <div className="bg-neutral-950/70 p-2 pt-1 text-white text-[13px] w-full rounded-md flex flex-col gap-2">
       <div className="flex flex-col w-full gap-1">
-        <div className="flex items-center justify-between">
-          <div>{stream.activity?.name}</div>
-          <div className="text-neutral-400">
+        <div className="flex items-center justify-between gap-2">
+          <div className="truncate">{stream.activity?.name}</div>
+          <div className="text-neutral-400 text-nowrap">
             Question {current}/{total}
           </div>
         </div>
         <div className="w-full h-1 rounded-full bg-neutral-500/40">
-          <div style={{ width: `${(current / total) * 100}%` }} className="h-full bg-rose-500 rounded-full"></div>
+          <div
+            style={{ width: `${(current / total) * 100}%` }}
+            className="h-full bg-rose-500 rounded-full transition-all"
+          ></div>
         </div>
       </div>
-      <div className="w-full flex gap-2">
+      <div className="w-full flex gap-2 overflow-hidden">
         {scores.map((score, i) => (
           <ScorePellet rank={i + 1} name={score.name} score={score.score} highlight={i === 0} />
         ))}

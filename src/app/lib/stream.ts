@@ -7,7 +7,7 @@ import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export type Stream = {
   host: string;
-  questionStatus: "active" | "ended";
+  questionStatus: QuestionStatus;
   activity?: Activity;
   currentQuestion: number;
   viewerCount: number;
@@ -20,6 +20,8 @@ export type LeaderboardData = {
   // contains keys userID with name and score properties
   [key: string]: number;
 };
+
+export type QuestionStatus = "active" | "ended";
 
 // hook to subscribe to stream
 export function useStream(streamId: string) {
@@ -54,14 +56,14 @@ export function useStream(streamId: string) {
     if (!currentStream || !currentStream.userAnswers) return;
 
     // Iterate through the user answers
-    currentStream.userAnswers.forEach((answer, userId) => {
-      // Check if the answer is correct
-      // const isCorrect = /* some logic to check if the answer is correct */
-      // Update the leaderboard data
-      // if (isCorrect) {
-      //   currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
-      // }
-    });
+    // currentStream.userAnswers.forEach((answer, userId) => { // TypeError: currentStream.userAnswers.forEach is not a function
+    // Check if the answer is correct
+    // const isCorrect = /* some logic to check if the answer is correct */
+    // Update the leaderboard data
+    // if (isCorrect) {
+    //   currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
+    // }
+    // });
 
     // Update the stream data with the new leaderboard
     await updateStream({

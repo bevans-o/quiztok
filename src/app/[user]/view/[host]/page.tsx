@@ -6,6 +6,7 @@ import StreamView from "@/app/components/layout/StreamView";
 import MockChat from "@/app/components/ui/live/MockChat";
 import UserCapsule from "@/app/components/ui/live/UserCapsule";
 import Leaderboard from "@/app/components/ui/quiz/Leaderboard";
+import QuestionPanel from "@/app/components/ui/quiz/QuestionPanel";
 import { useStream } from "@/app/lib/stream";
 import React from "react";
 
@@ -35,6 +36,16 @@ function Page({ params }: { params: { user: string; host: string } }) {
 
       <LiveFooter className="absolute bottom-0 px-4">
         <MockChat />
+
+        {question && stream?.activity && (
+          <QuestionPanel
+            activity={stream.activity}
+            question={question}
+            number={questionIndex}
+            status={stream?.questionStatus ?? "ended"}
+            submitAnswer={submitAnswer}
+          />
+        )}
       </LiveFooter>
     </StreamView>
   );
