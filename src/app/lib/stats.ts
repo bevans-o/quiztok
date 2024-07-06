@@ -8,9 +8,21 @@ export type PercentageStats = {
     percentage: string;
 }
 
-export function getStats(activityId: string) {
+export type Poll = {
+    id: string;
+  name: string;
+  date: Date;
+  author: string;
+  type: string;
+  response: any;
+}
+
+export function returnStats(activityId: string) {
     let stats = <unknown>[]
     const [percentage, setPercentage] = useState<PercentageStats | null>(null);
+    
+
+    
     const snap = onSnapshot(doc(db, "/activity", activityId), (snapshot) => {
         const data = snapshot.data();
         if (data) {
@@ -30,4 +42,26 @@ export function getStats(activityId: string) {
         })
     })
     return percentage
+}
+
+export async function getStats(activityId: string) {
+    try {
+        const response = await fetch(`/api/stats?id=${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const poll = (await response.json()) as Poll;
+          returnStats(poll)
+        } else {
+          console.error("Failed to get response: ", response.statusText);
+          return null;
+        }
+      } catch (error) {
+        console.error("Error getting response: ", error);
+      }
+
+    
 }

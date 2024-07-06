@@ -3,13 +3,33 @@ import React from "react";
 import Heading from "../ui/typography/Heading";
 import Button from "../ui/Button";
 
-function GenBar(answer: string, percentage: number) {
+function GenOp(answer: string, percentage: number) {
     return (
     <>
         <div style={{marginTop: '20px', marginBottom: '10px'}}>{answer}</div>
         <div className="w-full flex flex-col justify-between" style={{height: '20px', width: percentage, backgroundColor: 'rgb(244,63,94)'}}></div>
         <div style={{marginTop: '5px'}}>{percentage}%</div>
     </>
+    )
+}
+
+function GenSlider(answer: string, percentage: number) {
+    return (
+        <>
+            <div style={{marginTop: '20px', marginBottom: '10px'}}>{answer}</div>
+            <div className="w-full flex flex-col justify-between" style={{height: '20px', width: percentage, backgroundColor: 'rgb(244,63,94)'}}></div>
+            <div style={{marginTop: '5px'}}>{percentage}%</div>
+        </>
+    )
+}
+
+function GenBase(answer: string, percentage: number) {
+    return (
+        <>
+            <div style={{marginTop: '20px', marginBottom: '10px'}}>{answer}</div>
+            <div className="w-full flex flex-col justify-between" style={{height: '20px', width: percentage, backgroundColor: 'rgb(244,63,94)'}}></div>
+            <div style={{marginTop: '5px'}}>{percentage}%</div>
+        </>
     )
 }
 
