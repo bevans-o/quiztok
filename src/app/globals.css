@@ -44,3 +44,7 @@ main {
   translate: 0 -5px;
   cursor: pointer;
 }
+
+.fade-to-t {
+  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+}

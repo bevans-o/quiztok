@@ -37,11 +37,11 @@ export function useStream(streamId: string) {
     return unsub;
   }, [streamId]);
 
-  const updateStream = (data: Partial<Stream>) => {
-    setDoc(doc(db, "streams", streamId), data, { merge: true });
+  const updateStream = async (data: Partial<Stream>) => {
+    await setDoc(doc(db, "streams", streamId), data, { merge: true });
   };
 
-  const endGuessing = () => {
+  const endGuessing = async () => {
     // TODO: handle leaderboard calculations
     const sampleLeaderboard = {
       will: 23,
@@ -57,24 +57,24 @@ export function useStream(streamId: string) {
     currentStream.userAnswers.forEach((answer, userId) => {
       // Check if the answer is correct
       // const isCorrect = /* some logic to check if the answer is correct */
-
       // Update the leaderboard data
-      if (isCorrect) {
-        currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
-      }
+      // if (isCorrect) {
+      //   currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
+      // }
     });
 
     // Update the stream data with the new leaderboard
     await updateStream({
       questionStatus: "ended",
-      scores: currentStream.scores,
+      // scores: currentStream.scores,
+      scores: sampleLeaderboard, // temp sample scores
     });
   };
 
-  const changeQuestion = () => {
+  const changeQuestion = async () => {
     const target = stream ? stream.currentQuestion + 1 : 0;
 
-    updateStream({ currentQuestion: target, questionStatus: "active" });
+    await updateStream({ currentQuestion: target, questionStatus: "active" });
   };
 
   const submitAnswer = (userId: string, answer: Answer) => {

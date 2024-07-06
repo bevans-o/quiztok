@@ -16,7 +16,7 @@ const badgeVariants = cva("flex justify-center items-center pr-2 pl-1 border rou
     },
     size: {
       large: "text-sm gap-[3px] py-[2px]",
-      small: "text-[11px] gap-[2px] py-[1px]",
+      small: "text-[10px] gap-[2px] py-[0px]",
     },
   },
   defaultVariants: {
