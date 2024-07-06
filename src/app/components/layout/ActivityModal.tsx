@@ -26,7 +26,7 @@ function ActivityModal({
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | undefined>(undefined);
 
   useEffect(() => {
-    getActivities().then((res) => {
+    getActivities(user).then((res) => {
       setActivities(res);
     });
 

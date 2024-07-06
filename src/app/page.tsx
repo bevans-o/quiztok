@@ -7,6 +7,13 @@ import Link from "next/link";
 export default function Home() {
   const [name, setName] = useState<string>("");
 
+  const stripSpaces = (s: string) => {
+    return s
+      .split("")
+      .filter((c) => c != " ")
+      .join();
+  };
+
   return (
     <div className="w-full h-full bg-gradient-to-t from-rose-700/10 to-rose-700/0 flex flex-col gap-16 justify-center items-center">
       <div className="flex flex-col gap-2 justify-center items-center text-neutral-400">
@@ -19,10 +26,10 @@ export default function Home() {
       </div>
 
       <div className={cn("flex flex-col gap-2 transition-opacity", name ? "" : "opacity-20")}>
-        <Link href={`/${name}/view`}>
+        <Link href={`/${stripSpaces(name)}/view`}>
           <Button disabled={!name}>Join</Button>
         </Link>
-        <Link href={`/${name}/host/pre`}>
+        <Link href={`/${stripSpaces(name)}/host/pre`}>
           <Button disabled={!name} intent={"secondary"}>
             Host
           </Button>

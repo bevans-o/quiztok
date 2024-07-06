@@ -14,16 +14,11 @@ export type Stream = {
   userAnswers: Map<string, Answer>; // Map from user ID to their Answer
   scores: LeaderboardData;
   badge?: Badge;
-  // submitAnswer: (userId: string, answer: Answer) => void;
-  // updateCurrentQuestion: (question: QuizQuestion) => void;
 };
 
 export type LeaderboardData = {
   // contains keys userID with name and score properties
-  [key: string]: {
-    name: string;
-    score: number;
-  };
+  [key: string]: number;
 };
 
 // hook to subscribe to stream
@@ -35,22 +30,7 @@ export function useStream(streamId: string) {
     const unsub = onSnapshot(doc(db, "/streams", streamId), (snapshot) => {
       const data = snapshot.data();
       if (data) {
-        setStream({
-          host: data.host,
-          activityStatus: data.activityStatus,
-          activity: data.activity,
-          currentQuestion: data.currentQuestion,
-          viewerCount: data.viewerCount,
-          userAnswers: data.userAnswers,
-          scores: data.scores,
-          badge: data.badges,
-          // submitAnswer: (userId, answer) => {
-          //   updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
-          // },
-          // updateCurrentQuestion: (question) => {
-          //   updateDoc(doc(db, "streams", streamId), { currentQuestion: question });
-          // },
-        });
+        setStream(data as Stream);
       }
     });
 
@@ -61,7 +41,29 @@ export function useStream(streamId: string) {
     setDoc(doc(db, "streams", streamId), data, { merge: true });
   };
 
-  return { stream, updateStream };
+  const endGuessing = () => {
+    // TODO: handle leaderboard calculations
+    const sampleLeaderboard = {
+      will: 23,
+      jill: 15,
+      bill: 4,
+    };
+
+    updateStream({ activityStatus: "ended" });
+  };
+
+  const changeQuestion = () => {
+    const target = stream ? stream.currentQuestion + 1 : 0;
+
+    updateStream({ currentQuestion: target, activityStatus: "active" });
+  };
+
+  const submitAnswer = (userId: string, answer: Answer) => {
+    console.log("NOT IMPLEMENTED: submitAnswer");
+    // updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+  };
+
+  return { stream, endGuessing, changeQuestion, submitAnswer };
 }
 
 export async function postStream(stream: Stream) {
