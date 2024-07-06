@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { database as db } from "@/app/firebaseConfig"; // wherever the db is configured
-import { ref, onValue } from "firebase/database";
 import { Activity, QuizQuestion } from "./activity";
 import { Answer } from "./answer";
 import { Badge } from "./badge";
@@ -8,13 +7,13 @@ import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export type Stream = {
   host: string;
-  activityStatus: string;
+  activityStatus: "active" | "ended";
   activity?: Activity;
   currentQuestion: number;
   viewerCount: number;
   userAnswers: Map<string, Answer>; // Map from user ID to their Answer
   scores: LeaderboardData;
-  badges: Badge;
+  badge: Badge;
   submitAnswer: (userId: string, answer: Answer) => void;
   updateCurrentQuestion: (question: QuizQuestion) => void;
 };
@@ -28,48 +27,44 @@ export type LeaderboardData = {
 };
 
 // hook to subscribe to stream
-export function useStream(streamId: string) { 
+export function useStream(streamId: string) {
   const [stream, setStream] = useState<Stream | null>(null);
 
   useEffect(() => {
     // subscribes to real-time database changes
     const unsub = onSnapshot(doc(db, "/streams", streamId), (snapshot) => {
       const data = snapshot.data();
-      if (data) { 
-        setStream({ 
+      if (data) {
+        setStream({
           host: data.host,
           activityStatus: data.activityStatus,
-          activity: data.activity, 
+          activity: data.activity,
           currentQuestion: data.currentQuestion,
           viewerCount: data.viewerCount,
           userAnswers: data.userAnswers,
           scores: data.scores,
-          badges: data.badges,
+          badge: data.badges,
           submitAnswer: (userId, answer) => {
-            updateDoc(doc(db, 'streams', streamId, 'userAnswers', userId), answer);
+            updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
           },
           updateCurrentQuestion: (question) => {
-            updateDoc(doc(db, 'streams', streamId), { currentQuestion: question });
+            updateDoc(doc(db, "streams", streamId), { currentQuestion: question });
           },
         });
       }
     });
-  
+
     return unsub;
-  
   }, [streamId]);
 
-  const updateStream = (data: Partial<Stream>) => { 
-    setDoc(doc(db, 'streams', streamId), data, { merge: true });
-  }
-  
+  const updateStream = (data: Partial<Stream>) => {
+    setDoc(doc(db, "streams", streamId), data, { merge: true });
+  };
+
   return { stream, updateStream };
 }
 
 // hook to subscribe to current question
-
-
-
 
 // export function useCurrentQuestion(streamId: string) {
 //   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
