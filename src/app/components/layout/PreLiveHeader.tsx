@@ -3,7 +3,15 @@ import React from "react";
 import StreamDetails from "../ui/StreamDetails";
 import { Activity } from "@/app/lib/activity";
 
-function PreLiveHeader({ className, activity }: { className?: string; activity?: Activity }) {
+function PreLiveHeader({
+  className,
+  activity,
+  onClick = () => {},
+}: {
+  className?: string;
+  activity?: Activity;
+  onClick?: () => void;
+}) {
   return (
     <div
       className={cn(
@@ -33,7 +41,7 @@ function PreLiveHeader({ className, activity }: { className?: string; activity?:
         </div>
       </div>
 
-      <StreamDetails streamTitle="Jimbo's Tuesday Trivia Frenzy!!!" activity={activity} />
+      <StreamDetails streamTitle="Jimbo's Tuesday Trivia Frenzy!!!" activity={activity} onClick={onClick} />
     </div>
   );
 }

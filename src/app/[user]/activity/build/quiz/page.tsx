@@ -82,9 +82,9 @@ function Page({ params }: { params: { user: string } }) {
         <Button
           disabled={!(quiz.name && quiz.sections.length > 0)}
           size={"full"}
-          onClick={() => {
-            postActivity(quiz);
-            router.push(`/${params.user}/host/pre`);
+          onClick={async () => {
+            await postActivity(quiz);
+            router.push(`/${params.user}/host/pre?modal=true`);
           }}
         >
           Done

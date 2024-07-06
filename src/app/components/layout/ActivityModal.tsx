@@ -57,7 +57,9 @@ function ActivityModal({
             </div>
           </div>
 
-          <div className="w-full absolute bottom-0 h-12 bg-gradient-to-t from-white to-white/0" />
+          {activities.length > 4 && (
+            <div className="w-full absolute bottom-0 h-12 bg-gradient-to-t from-white to-white/0" />
+          )}
         </div>
 
         <div className="flex justify-center">

@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 function Page({ params }: { params: { user: string } }) {
   const router = useRouter();
 
-  const [badge, setBadge] = useState<BadgeType>({ name: "", icon: "heart", colour: "red" });
+  const [badge, setBadge] = useState<BadgeType>({ name: "", icon: "heart", colour: "red", author: params.user });
   const colours = ["red", "rose", "blue", "green", "yellow", "teal", "purple"];
 
   return (
@@ -86,9 +86,9 @@ function Page({ params }: { params: { user: string } }) {
         <div className="w-full pt-4 pb-8 px-6 border-t-2 border-neutral-200 bg-white z-10">
           <Button
             size={"full"}
-            onClick={() => {
-              postBadge(badge);
-              router.push(`/${params.user}/host/pre`);
+            onClick={async () => {
+              await postBadge(badge);
+              router.push(`/${params.user}/host/pre?modal=true`);
             }}
           >
             Done
