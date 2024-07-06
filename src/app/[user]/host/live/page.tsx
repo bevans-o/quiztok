@@ -13,7 +13,7 @@ import React from "react";
 function Page({ params }: { params: { user: string } }) {
   const { stream, changeQuestion, endGuessing } = useStream(params.user);
   const questionIndex = stream?.activity ? stream.currentQuestion : -1;
-  const activityActive = stream?.activity && questionIndex < stream?.activity?.sections.length;
+  const activityActive = stream?.activity && questionIndex < stream?.activity?.sections.length && questionIndex > -1;
   const question = activityActive ? stream.activity?.sections[questionIndex] : undefined;
 
   console.log(stream);
