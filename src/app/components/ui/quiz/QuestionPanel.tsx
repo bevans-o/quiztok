@@ -35,8 +35,12 @@ function QuestionPanel({
         {question.type == "option" && (
           <OptionQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
         )}
-        {question.type == "slider" && <SliderQuestionPanel submitAnswer={submitAnswer} question={question} />}
-        {question.type == "ranking" && <RankingQuestionPanel submitAnswer={submitAnswer} question={question} />}
+        {question.type == "slider" && (
+          <SliderQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
+        )}
+        {question.type == "ranking" && (
+          <RankingQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
+        )}
       </div>
 
       {changeQuestion && status === "ended" && (

@@ -42,7 +42,19 @@ main {
   background: #e11d48;
   border-radius: 99999px;
   translate: 0 -5px;
-  cursor: pointer;
+  cursor: grab;
+}
+
+.slider-dark::-webkit-slider-runnable-track {
+  background: #363636;
+  outline: 1px solid #3f3e3e;
+}
+
+.slider-dark::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 26px;
+  width: 26px;
+  translate: 0 -9px;
 }
 
 .fade-to-t {
