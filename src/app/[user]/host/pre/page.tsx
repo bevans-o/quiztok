@@ -16,7 +16,7 @@ function Page({ params }: { params: { user: string } }) {
 
   const [stream, setStream] = useState<Stream>({
     host: params.user,
-    activityStatus: "ended",
+    questionStatus: "ended",
     activity: undefined,
     currentQuestion: -1,
     viewerCount: 0,

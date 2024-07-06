@@ -9,6 +9,8 @@ import React from "react";
 function Page({ params }: { params: { user: string } }) {
   const { stream, changeQuestion, endGuessing } = useStream(params.user);
 
+  console.log(stream);
+
   return (
     <StreamView>
       <LiveHeader className="absolute top-0" />

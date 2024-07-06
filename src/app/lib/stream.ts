@@ -7,7 +7,7 @@ import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export type Stream = {
   host: string;
-  activityStatus: "active" | "ended";
+  questionStatus: "active" | "ended";
   activity?: Activity;
   currentQuestion: number;
   viewerCount: number;
@@ -49,13 +49,13 @@ export function useStream(streamId: string) {
       bill: 4,
     };
 
-    updateStream({ activityStatus: "ended" });
+    updateStream({ questionStatus: "ended" });
   };
 
   const changeQuestion = () => {
     const target = stream ? stream.currentQuestion + 1 : 0;
 
-    updateStream({ currentQuestion: target, activityStatus: "active" });
+    updateStream({ currentQuestion: target, questionStatus: "active" });
   };
 
   const submitAnswer = (userId: string, answer: Answer) => {
