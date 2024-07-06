@@ -49,7 +49,26 @@ export function useStream(streamId: string) {
       bill: 4,
     };
 
-    updateStream({ questionStatus: "ended" });
+    // Get the current stream data
+    const currentStream = stream;
+    if (!currentStream || !currentStream.userAnswers) return;
+
+    // Iterate through the user answers
+    currentStream.userAnswers.forEach((answer, userId) => {
+      // Check if the answer is correct
+      // const isCorrect = /* some logic to check if the answer is correct */
+
+      // Update the leaderboard data
+      if (isCorrect) {
+        currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
+      }
+    });
+
+    // Update the stream data with the new leaderboard
+    await updateStream({
+      questionStatus: "ended",
+      scores: currentStream.scores,
+    });
   };
 
   const changeQuestion = () => {
@@ -60,7 +79,18 @@ export function useStream(streamId: string) {
 
   const submitAnswer = (userId: string, answer: Answer) => {
     console.log("NOT IMPLEMENTED: submitAnswer");
-    // updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+    updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+
+    // Update stream state with new user answer
+    setStream((prevStream) => {
+      if (prevStream) {
+        return {
+          ...prevStream,
+          userAnswers: new Map(prevStream.userAnswers).set(userId, answer),
+        };
+      }
+      return prevStream;
+    });
   };
 
   return { stream, endGuessing, changeQuestion, submitAnswer };
