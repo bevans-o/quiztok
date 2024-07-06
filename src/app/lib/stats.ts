@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { database as db } from "@/app/firebaseConfig"; // wherever the db is configured
+import { database as db } from "@/app/firebaseConfig";
 import { Activity, QuizQuestion } from "./activity";
-import { Answer } from "./answer";
-import { Badge } from "./badge";
 import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
 
 export type PercentageStats = {
@@ -10,13 +8,26 @@ export type PercentageStats = {
     percentage: string;
 }
 
-export function usePercentageStats(streamId: string) {
-    const [statsData, setStatsData] = useState<PercentageStats>({});
-    const unsubscribe = db.ref(`quiz-activity/${streamId}`).on('value', (snapshot) => {
-        const data = snapshot.val();
+export function getStats(activityId: string) {
+    let stats = <unknown>[]
+    const [percentage, setPercentage] = useState<PercentageStats | null>(null);
+    const snap = onSnapshot(doc(db, "/activity", activityId), (snapshot) => {
+        const data = snapshot.data();
         if (data) {
-            setStatsData({
+            data.response.map((res: any) => {
+                if (res.answer in stats) {
+                    stats[res.answer] = stats[res.answer] + 1
+                } else {
+                    stats[res.answer] = 1
+                }
             })
         }
-    }
+        stats.map((res: any) => {
+            setPercentage({
+                answer: res.index(),
+                percentage: res
+            })
+        })
+    })
+    return percentage
 }
