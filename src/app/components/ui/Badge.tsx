@@ -3,7 +3,7 @@ import { cn } from "@/app/lib/util";
 import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 
-const badgeVariants = cva("flex justify-center items-center pr-2 pl-1 border rounded-full w-fit", {
+const badgeVariants = cva("flex justify-center items-center pr-2 pl-1 border rounded-full w-fit select-none", {
   variants: {
     colour: {
       red: "bg-red-600 text-neutral-50 border-red-500",
@@ -38,8 +38,8 @@ const iconVariants = cva("p-[1px]", {
 });
 
 export interface BadgeProps extends VariantProps<typeof badgeVariants> {
-  name: string;
-  icon: Icon;
+  name?: string;
+  icon?: Icon;
 }
 
 function Badge({ name, icon, colour, size }: BadgeProps) {

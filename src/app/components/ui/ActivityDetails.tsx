@@ -2,11 +2,16 @@ import { Activity, getActivityTypeString } from "@/app/lib/activity";
 import React from "react";
 import Subheading from "./typography/Subheading";
 import Detail from "./typography/Detail";
+import { cn } from "@/app/lib/util";
 
-function ActivityDetails({ activity }: { activity: Activity }) {
-  console.log(activity);
+function ActivityDetails({ activity, selected = false }: { activity: Activity; selected?: boolean }) {
   return (
-    <div className="border border-neutral-200 rounded flex justify-between p-2 cursor-pointer hover:bg-neutral-100 transition-colors">
+    <div
+      className={cn(
+        "border rounded flex justify-between p-2 cursor-pointer hover:bg-neutral-100 transition-colors",
+        selected ? "border-rose-500" : "border-neutral-200 "
+      )}
+    >
       <div className="flex flex-col justify-between gap-1">
         <div className="max-w-48">
           <Subheading>{activity.name}</Subheading>

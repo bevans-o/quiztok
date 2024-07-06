@@ -33,7 +33,16 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const badge = (await request.json()) as Badge;
-  const snapshot = await addDoc(collection(db, "badges"), badge);
+  if (!badge.id) {
+    const snapshot = await addDoc(collection(db, "badges"), badge);
+    const updateRef = doc(db, "badges", snapshot.id);
+    await updateDoc(updateRef, { id: snapshot.id });
 
-  return Response.json({ id: snapshot.id });
+    return Response.json({ id: snapshot.id });
+  } else {
+    const updateRef = doc(db, "activities", badge.id);
+    await updateDoc(updateRef, badge);
+
+    return Response.json({ id: badge.id });
+  }
 }

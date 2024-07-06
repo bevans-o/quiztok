@@ -13,9 +13,9 @@ export type Stream = {
   viewerCount: number;
   userAnswers: Map<string, Answer>; // Map from user ID to their Answer
   scores: LeaderboardData;
-  badge: Badge;
-  submitAnswer: (userId: string, answer: Answer) => void;
-  updateCurrentQuestion: (question: QuizQuestion) => void;
+  badge?: Badge;
+  // submitAnswer: (userId: string, answer: Answer) => void;
+  // updateCurrentQuestion: (question: QuizQuestion) => void;
 };
 
 export type LeaderboardData = {
@@ -44,12 +44,12 @@ export function useStream(streamId: string) {
           userAnswers: data.userAnswers,
           scores: data.scores,
           badge: data.badges,
-          submitAnswer: (userId, answer) => {
-            updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
-          },
-          updateCurrentQuestion: (question) => {
-            updateDoc(doc(db, "streams", streamId), { currentQuestion: question });
-          },
+          // submitAnswer: (userId, answer) => {
+          //   updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+          // },
+          // updateCurrentQuestion: (question) => {
+          //   updateDoc(doc(db, "streams", streamId), { currentQuestion: question });
+          // },
         });
       }
     });
@@ -62,6 +62,25 @@ export function useStream(streamId: string) {
   };
 
   return { stream, updateStream };
+}
+
+export async function postStream(stream: Stream) {
+  try {
+    const response = await fetch("/api/stream", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(stream),
+    });
+    if (response.ok) {
+      console.log(`Stream ${stream.host} posted successfully`);
+    } else {
+      console.error("Failed to post stream object:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error posting stream object:", error);
+  }
 }
 
 // hook to subscribe to current question

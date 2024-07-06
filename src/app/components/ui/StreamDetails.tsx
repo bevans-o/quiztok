@@ -1,13 +1,17 @@
 import { Activity } from "@/app/lib/activity";
+import { Badge as BadgeType } from "@/app/lib/badge";
 import React from "react";
+import Badge from "./Badge";
 
 function StreamDetails({
   streamTitle,
   activity,
+  badge,
   onClick = () => {},
 }: {
   streamTitle?: string;
   activity?: Activity;
+  badge?: BadgeType;
   onClick?: () => void;
 }) {
   return (
@@ -18,7 +22,10 @@ function StreamDetails({
         </div>
         <div className="flex flex-col gap-[2px] cursor-pointer" onClick={onClick}>
           <div className="text-neutral-200 font-bold">{streamTitle}</div>
-          <div className="text-xs">{activity ? activity.name : "No activity selected."}</div>
+          <div className="text-xs flex items-center gap-2">
+            {activity ? activity.name : "No activity selected."}
+            {badge && <Badge {...badge} size="small" />}
+          </div>
         </div>
       </div>
       <div className="flex justify-between gap-2 text-[13px]">

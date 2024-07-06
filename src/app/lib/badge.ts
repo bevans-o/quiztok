@@ -4,6 +4,7 @@ export type Icon = "star" | "heart" | "flower";
 export type Badge = {
   author: string;
   name: string;
+  id: string;
   colour: Colour;
   icon: Icon;
 };

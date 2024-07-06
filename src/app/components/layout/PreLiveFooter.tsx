@@ -7,9 +7,11 @@ import Link from "next/link";
 
 function PreLiveFooter({
   className,
+  onStart = () => {},
   onSelectActivities = () => {},
 }: {
   className?: string;
+  onStart?: () => void;
   onSelectActivities?: () => void;
 }) {
   return (
@@ -33,9 +35,7 @@ function PreLiveFooter({
         <IconButton label="Subscription" icon="subscription" />
         <IconButton label="Promote" icon="promote" />
       </div>
-      <Link href="live">
-        <Button>Go LIVE</Button>
-      </Link>
+      <Button onClick={onStart}>Go LIVE</Button>
       <StaticModeSwiper />
     </div>
   );

@@ -2,14 +2,19 @@ import { cn } from "@/app/lib/util";
 import React from "react";
 import StreamDetails from "../ui/StreamDetails";
 import { Activity } from "@/app/lib/activity";
+import { Badge } from "@/app/lib/badge";
 
 function PreLiveHeader({
   className,
   activity,
+  badge,
+  title,
   onClick = () => {},
 }: {
   className?: string;
   activity?: Activity;
+  badge?: Badge;
+  title?: string;
   onClick?: () => void;
 }) {
   return (
@@ -41,7 +46,7 @@ function PreLiveHeader({
         </div>
       </div>
 
-      <StreamDetails streamTitle="Jimbo's Tuesday Trivia Frenzy!!!" activity={activity} onClick={onClick} />
+      <StreamDetails streamTitle={title} activity={activity} badge={badge} onClick={onClick} />
     </div>
   );
 }
