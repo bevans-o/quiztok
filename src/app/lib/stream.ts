@@ -126,6 +126,29 @@ export async function postStream(stream: Stream) {
   }
 }
 
+export async function getStreams(): Promise<Stream[]> {
+  try {
+    const response = await fetch(`/api/streams`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const streams = await response.json();
+
+      return streams;
+    } else {
+      console.error("Failed to get streams: ", response.statusText);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error getting streams: ", error);
+  }
+
+  return [];
+}
+
 // hook to subscribe to current question
 
 // export function useCurrentQuestion(streamId: string) {
