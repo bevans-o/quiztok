@@ -24,6 +24,7 @@ function Page({ params }: { params: { user: string } }) {
     userAnswers: new Map(),
     scores: {},
     badge: undefined,
+    condition: "Top Scorer",
   });
 
   return (

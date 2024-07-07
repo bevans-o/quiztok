@@ -16,7 +16,10 @@ export type Stream = {
   userAnswers: Map<string, Answer>; // Map from user ID to their Answer
   scores: LeaderboardData;
   badge?: Badge;
+  condition?: BadgeCondition;
 };
+
+export type BadgeCondition = "Top Scorer" | "Top Three" | "Top Five";
 
 export type LeaderboardData = {
   // contains keys userID with name and score properties
