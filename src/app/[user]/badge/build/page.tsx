@@ -15,7 +15,6 @@ function Page({ params }: { params: { user: string } }) {
     name: "",
     icon: "heart",
     colour: "red",
-    condition: "Top Scorer",
     author: params.user,
     id: "",
   });
