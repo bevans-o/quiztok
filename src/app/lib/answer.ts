@@ -1,7 +1,7 @@
 import { Activity } from "./activity";
 
 export type Answer = {
-  questionId: string;
+  questionIndex: number;
   answerType: AnswerOption | AnswerSlider | AnswerRanking;
 };
 
@@ -20,11 +20,7 @@ export type AnswerRanking = {
   rankedItems: { text: string; rank: number }[];
 };
 
-export function checkAnswer(
-  answer: Answer,
-  activity: Activity,
-  questionNo: number
-): boolean {
+export function checkAnswer(answer: Answer, activity: Activity, questionNo: number): boolean {
   // Get the current question from the activity data
   const currentQuestion = activity.sections[questionNo];
 

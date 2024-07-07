@@ -32,7 +32,7 @@ function Leaderboard({ stream }: { stream: Stream }) {
       </div>
       <div className="w-full flex gap-2 overflow-hidden">
         {scores.map((score, i) => (
-          <ScorePellet rank={i + 1} name={score.name} score={score.score} highlight={i === 0} />
+          <ScorePellet key={i} rank={i + 1} name={score.name} score={score.score} highlight={i === 0} />
         ))}
       </div>
     </div>

@@ -4,14 +4,17 @@ import { QuestionStatus } from "@/app/lib/stream";
 import { Reorder } from "framer-motion";
 import React, { useState } from "react";
 import Button from "../Button";
+import { cn } from "@/app/lib/util";
 
 function RankingQuestionPanel({
   question,
   status,
+  locked = false,
   submitAnswer,
 }: {
   question: RankingQuestion;
   status: QuestionStatus;
+  locked?: boolean;
   submitAnswer?: (answer: AnswerRanking) => void;
 }) {
   const randomiseOptions = (a: any[]) => {
@@ -27,11 +30,11 @@ function RankingQuestionPanel({
     return newArray;
   };
   const [rankings, setRankings] = useState<{ text: string; value: number; key: string }[]>(
-    randomiseOptions(question.options)
+    submitAnswer ? randomiseOptions(question.options) : question.options
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn("flex flex-col gap-2", locked || status === "ended" ? "opacity-50" : "")}>
       <div className="flex gap-2 w-full py-2">
         <div className="h-full flex flex-col gap-2">
           {question.options.map((_, optionIndex) => (
@@ -47,9 +50,13 @@ function RankingQuestionPanel({
         {submitAnswer && (
           <Reorder.Group
             values={rankings}
-            onReorder={(rankings) => {
-              setRankings(rankings);
-            }}
+            onReorder={
+              locked || status === "ended"
+                ? () => {}
+                : (rankings) => {
+                    setRankings(rankings);
+                  }
+            }
             className="flex flex-col gap-2 w-full"
           >
             {rankings.map((option, optionIndex) => (
@@ -84,6 +91,7 @@ function RankingQuestionPanel({
       </div>
       {submitAnswer && (
         <Button
+          disabled={locked || status === "ended"}
           size="full"
           className="py-2 text-base"
           onClick={() =>

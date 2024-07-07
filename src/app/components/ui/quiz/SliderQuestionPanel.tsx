@@ -3,25 +3,29 @@ import { AnswerSlider } from "@/app/lib/answer";
 import { QuestionStatus } from "@/app/lib/stream";
 import React, { useState } from "react";
 import Button from "../Button";
+import { cn } from "@/app/lib/util";
 
 function SliderQuestionPanel({
   question,
   status,
+  locked = false,
   submitAnswer,
 }: {
   question: SliderQuestion;
   status: QuestionStatus;
+  locked?: boolean;
   submitAnswer?: (answer: AnswerSlider) => void;
 }) {
   const [value, setValue] = useState<number>(50);
 
   return (
-    <div className="flex flex-col pt-2">
+    <div className={cn("flex flex-col pt-2", locked ? "opacity-50" : "")}>
       <div className="relative w-full flex justify-between text-xs text-neutral-500 px-[3px] pb-2">
         <div>{question.min}</div>
         <div>{question.max}</div>
       </div>
       <input
+        disabled={locked || status === "ended"}
         type="range"
         className="w-full slider slider-dark truncate grow"
         max={question.max}
@@ -43,6 +47,7 @@ function SliderQuestionPanel({
 
       {submitAnswer && (
         <Button
+          disabled={locked || status === "ended"}
           size="full"
           className="py-2 text-base"
           onClick={() => submitAnswer?.({ type: "slider", selectedValue: value })}

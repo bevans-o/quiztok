@@ -1,6 +1,8 @@
+"use client";
+
 import { Activity, QuizQuestion } from "@/app/lib/activity";
 import { Answer } from "@/app/lib/answer";
-import React from "react";
+import React, { useState } from "react";
 import OptionQuestionPanel from "./OptionQuestionPanel";
 import SliderQuestionPanel from "./SliderQuestionPanel";
 import RankingQuestionPanel from "./RankingQuestionPanel";
@@ -26,6 +28,8 @@ function QuestionPanel({
   endGuessing?: () => void;
   submitAnswer?: (id: string, answer: Answer) => void;
 }) {
+  const [lastSubmittedIndex, setLastSubmittedIndex] = useState<number>(-1);
+
   return (
     <div className="w-full bg-neutral-950/70 rounded-md text-white p-3 pt-2 text-[13px] flex flex-col gap-3">
       <div className="flex flex-col w-full gap-1">
@@ -36,21 +40,38 @@ function QuestionPanel({
 
         {question.type == "option" && (
           <OptionQuestionPanel
-            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            key={number}
+            submitAnswer={(a) => {
+              // submit answer and update index - we can use the
+              // index to determine if the current question has been submitted
+              submitAnswer?.(user, { questionIndex: number, answerType: a });
+              setLastSubmittedIndex(number);
+            }}
+            locked={lastSubmittedIndex >= number}
             question={question}
             status={status}
           />
         )}
         {question.type == "slider" && (
           <SliderQuestionPanel
-            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            key={number}
+            submitAnswer={(a) => {
+              submitAnswer?.(user, { questionIndex: number, answerType: a });
+              setLastSubmittedIndex(number);
+            }}
+            locked={lastSubmittedIndex >= number}
             question={question}
             status={status}
           />
         )}
         {question.type == "ranking" && (
           <RankingQuestionPanel
-            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            key={number}
+            submitAnswer={(a) => {
+              submitAnswer?.(user, { questionIndex: number, answerType: a });
+              setLastSubmittedIndex(number);
+            }}
+            locked={lastSubmittedIndex >= number}
             question={question}
             status={status}
           />
@@ -59,7 +80,7 @@ function QuestionPanel({
 
       {changeQuestion && status === "ended" && (
         <Button size={"full"} className="text-sm py-2" onClick={changeQuestion}>
-          {number === activity.sections.length ? "End Activity" : "Next Question"}
+          {number + 1 === activity.sections.length ? "End Activity" : "Next Question"}
         </Button>
       )}
       {endGuessing && status === "active" && (

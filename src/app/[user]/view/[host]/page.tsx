@@ -16,8 +16,6 @@ function Page({ params }: { params: { user: string; host: string } }) {
   const activityActive = stream?.activity && questionIndex < stream?.activity?.sections.length && questionIndex > -1;
   const question = activityActive ? stream.activity?.sections[questionIndex] : undefined;
 
-  console.log(stream);
-
   return (
     <StreamView>
       <LiveHeader className="absolute top-0 pl-4 pr-2">
@@ -51,3 +49,5 @@ function Page({ params }: { params: { user: string; host: string } }) {
     </StreamView>
   );
 }
+
+export default Page;
