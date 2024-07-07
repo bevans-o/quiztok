@@ -15,6 +15,7 @@ function QuestionPanel({
   question,
   number,
   status,
+  percentage,
   changeQuestion,
   endGuessing,
   submitAnswer,
@@ -24,6 +25,7 @@ function QuestionPanel({
   question: QuizQuestion;
   number: number;
   status: QuestionStatus;
+  percentage?: number;
   changeQuestion?: () => void;
   endGuessing?: () => void;
   submitAnswer?: (id: string, answer: Answer) => void;
@@ -73,6 +75,10 @@ function QuestionPanel({
           />
         )}
       </div>
+
+      {status === "ended" && percentage != undefined && (
+        <div className="w-full text-center text-neutral-400">{percentage}% got it right.</div>
+      )}
 
       {changeQuestion && status === "ended" && (
         <Button size={"full"} className="text-sm py-2" onClick={changeQuestion}>

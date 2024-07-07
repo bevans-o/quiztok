@@ -6,17 +6,20 @@ function ScorePellet({
   name,
   score,
   highlight = false,
+  grow = false,
 }: {
   rank: number;
   name: string;
   score: number;
   highlight?: boolean;
+  grow?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "flex gap-3 border-2 rounded-md pl-[2px] pr-1 py-[2px] text-xs",
-        highlight ? "bg-orange-400/80 border-orange-400" : "bg-neutral-600/60 border-transparent"
+        "flex gap-3 border-2 rounded-md pl-[2px] pr-1 py-[2px] text-xs justify-between",
+        highlight ? "bg-orange-400/80 border-orange-400" : "bg-neutral-600/60 border-transparent",
+        grow ? "grow" : ""
       )}
     >
       <div className="flex items-center gap-1">

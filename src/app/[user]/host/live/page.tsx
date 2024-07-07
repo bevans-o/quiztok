@@ -9,6 +9,7 @@ import MockChat from "@/app/components/ui/live/MockChat";
 import UserCapsule from "@/app/components/ui/live/UserCapsule";
 import Leaderboard from "@/app/components/ui/quiz/Leaderboard";
 import QuestionPanel from "@/app/components/ui/quiz/QuestionPanel";
+import SummaryScreen from "@/app/components/ui/quiz/SummaryScreen";
 import { useStream } from "@/app/lib/stream";
 import Link from "next/link";
 import React from "react";
@@ -35,6 +36,11 @@ function Page({ params }: { params: { user: string } }) {
         {activityActive && <Leaderboard stream={stream} />}
       </LiveHeader>
 
+      {/* after the last question, display results screen */}
+      {questionIndex === stream?.activity?.sections.length && (
+        <SummaryScreen stream={stream} user={params.user} onEnd={changeQuestion} />
+      )}
+
       <LiveFooter className="absolute bottom-0 px-4">
         <MockChat />
         {question && stream?.activity && (
@@ -43,6 +49,7 @@ function Page({ params }: { params: { user: string } }) {
             activity={stream.activity}
             question={question}
             number={questionIndex}
+            percentage={Math.floor(stream.questionPercentage)}
             status={stream?.questionStatus ?? "ended"}
             changeQuestion={changeQuestion}
             endGuessing={endGuessing}

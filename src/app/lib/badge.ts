@@ -75,44 +75,53 @@ export async function postBadge(badge: Badge) {
   }
 }
 
-export async function assignBadge(stream: Stream) {
+export function getBadgeWinners(stream: Stream) {
   const badge = stream.badge;
   if (badge) {
-    const sortedUsers: Record<string, number> = Object.fromEntries(
-      Object.entries(stream.scores).sort((a, b) => b[1] - a[1])
-    );
+    const keys = Object.keys(stream.scores);
+    const sortedUsers = keys
+      .map((key) => {
+        return { name: key, score: stream.scores[key] };
+      })
+      .sort((a, b) => b.score - a.score);
+
+    if (sortedUsers.length < 1) return [];
+
     let badgeHolders: string[] = [];
 
-    if (stream.condition == "Top Scorer") {
-      for (let user in sortedUsers) {
-        if (stream.scores[user] < sortedUsers[0].valueOf()) {
+    if (stream.condition === "Top Scorer") {
+      for (const user of sortedUsers) {
+        if (user.score < sortedUsers[0].score) {
           continue;
-        } else if (stream.scores[user] === sortedUsers[0].valueOf()) {
-          badgeHolders.push(user);
+        } else if (user.score === sortedUsers[0].score) {
+          badgeHolders.push(user.name);
         } else {
           break;
         }
       }
-    } else if (stream.condition == "Top Three") {
+    } else if (stream.condition === "Top Three") {
       let count = 0;
-      for (let user in sortedUsers) {
-        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 3) {
-          badgeHolders.push(user);
+      for (const user of sortedUsers) {
+        if (user.score < sortedUsers[0].score && count < 3) {
+          badgeHolders.push(user.name);
           count += 1;
         } else {
           break;
         }
       }
-    } else if (stream.condition == "Top Five") {
+    } else if (stream.condition === "Top Five") {
       let count = 0;
-      for (let user in sortedUsers) {
-        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 5) {
-          badgeHolders.push(user);
+      for (const user of sortedUsers) {
+        if (user.score < sortedUsers[0].score && count < 5) {
+          badgeHolders.push(user.name);
           count += 1;
         } else {
           break;
         }
       }
     }
+    return badgeHolders;
   }
+
+  return [];
 }

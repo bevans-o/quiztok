@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { database as db } from "@/app/firebaseConfig"; // wherever the db is configured
 import { Activity, QuizQuestion } from "./activity";
 import { Answer } from "./answer";
-import { Badge } from "./badge";
+import { Badge, getBadgeWinners } from "./badge";
 import { onSnapshot, doc, setDoc, updateDoc, collection, query, getDocs, deleteDoc } from "firebase/firestore";
 import { checkAnswer } from "./answer";
+import { assignBadge } from "./badge-owner";
 
 export type Stream = {
   host: string;
@@ -93,6 +94,7 @@ export function useStream(streamId: string) {
       if (correct) {
         // add points, or add entry if it doesn't exist yet
         scores[answer.user] = scores[answer.user] ? scores[answer.user] + question.points : question.points;
+        correctCount += 1;
       } else if (!scores[answer.user]) {
         // check to add user to scoreboard even if they get the question incorrect
         scores[answer.user] = 0;
@@ -102,7 +104,9 @@ export function useStream(streamId: string) {
       deleteDoc(doc(db, "streams", streamId, "userAnswers", answer.user));
     });
 
-    const percentCorrect = correctCount / userAnswers.length;
+    const percentCorrect = (correctCount / userAnswers.length) * 100;
+
+    console.log(percentCorrect);
 
     return { percentCorrect, scores };
   };
@@ -111,6 +115,15 @@ export function useStream(streamId: string) {
     const target = stream ? stream.currentQuestion + 1 : 0;
 
     await updateStream({ currentQuestion: target, questionStatus: "active" });
+
+    if (target === stream?.activity?.sections.length) {
+      // activity is over, assign badges
+      const winners = getBadgeWinners(stream);
+
+      winners.forEach((winner) => {
+        assignBadge({ name: winner, id: stream.badge?.id ?? "" });
+      });
+    }
   };
 
   const submitAnswer = (userId: string, answer: Answer) => {
