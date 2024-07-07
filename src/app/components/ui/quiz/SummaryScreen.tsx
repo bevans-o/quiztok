@@ -42,7 +42,7 @@ function SummaryScreen({ stream, user, onEnd }: { stream: Stream; user: string; 
           </div>
         )}
 
-        <div className="flex flex-col bg-neutral-950/30 rounded-md p-2 w-full">
+        <div className="flex flex-col bg-neutral-950/30 rounded-md p-2 w-full gap-1">
           <div className="w-full uppercase font-semibold text-sm text-neutral-400 text-center pb-2">Leaderboard</div>
           {topFive.map((score, i) => (
             <div className="w-full flex gap-1" key={score.name}>
