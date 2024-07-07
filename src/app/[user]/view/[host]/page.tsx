@@ -39,6 +39,7 @@ function Page({ params }: { params: { user: string; host: string } }) {
 
         {question && stream?.activity && (
           <QuestionPanel
+            user={params.user}
             activity={stream.activity}
             question={question}
             number={questionIndex}

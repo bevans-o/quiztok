@@ -8,6 +8,7 @@ import Button from "../Button";
 import { QuestionStatus } from "@/app/lib/stream";
 
 function QuestionPanel({
+  user,
   activity,
   question,
   number,
@@ -16,6 +17,7 @@ function QuestionPanel({
   endGuessing,
   submitAnswer,
 }: {
+  user: string;
   activity: Activity;
   question: QuizQuestion;
   number: number;
@@ -33,13 +35,25 @@ function QuestionPanel({
         </div>
 
         {question.type == "option" && (
-          <OptionQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
+          <OptionQuestionPanel
+            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            question={question}
+            status={status}
+          />
         )}
         {question.type == "slider" && (
-          <SliderQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
+          <SliderQuestionPanel
+            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            question={question}
+            status={status}
+          />
         )}
         {question.type == "ranking" && (
-          <RankingQuestionPanel submitAnswer={submitAnswer} question={question} status={status} />
+          <RankingQuestionPanel
+            submitAnswer={(a) => submitAnswer?.(user, { questionIndex: number, answer: a })}
+            question={question}
+            status={status}
+          />
         )}
       </div>
 

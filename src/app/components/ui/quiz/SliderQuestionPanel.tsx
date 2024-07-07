@@ -1,5 +1,5 @@
 import { SliderQuestion } from "@/app/lib/activity";
-import { Answer } from "@/app/lib/answer";
+import { AnswerSlider } from "@/app/lib/answer";
 import { QuestionStatus } from "@/app/lib/stream";
 import React, { useState } from "react";
 import Button from "../Button";
@@ -11,7 +11,7 @@ function SliderQuestionPanel({
 }: {
   question: SliderQuestion;
   status: QuestionStatus;
-  submitAnswer?: (id: string, answer: Answer) => void;
+  submitAnswer?: (answer: AnswerSlider) => void;
 }) {
   const [value, setValue] = useState<number>(50);
 
@@ -42,7 +42,11 @@ function SliderQuestionPanel({
       </div>
 
       {submitAnswer && (
-        <Button size="full" className="py-2 text-base">
+        <Button
+          size="full"
+          className="py-2 text-base"
+          onClick={() => submitAnswer?.({ type: "slider", selectedValue: value })}
+        >
           Submit
         </Button>
       )}

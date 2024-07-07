@@ -1,5 +1,5 @@
 import { RankingQuestion } from "@/app/lib/activity";
-import { Answer } from "@/app/lib/answer";
+import { AnswerRanking } from "@/app/lib/answer";
 import { QuestionStatus } from "@/app/lib/stream";
 import { Reorder } from "framer-motion";
 import React, { useState } from "react";
@@ -12,7 +12,7 @@ function RankingQuestionPanel({
 }: {
   question: RankingQuestion;
   status: QuestionStatus;
-  submitAnswer?: (id: string, answer: Answer) => void;
+  submitAnswer?: (answer: AnswerRanking) => void;
 }) {
   const randomiseOptions = (a: any[]) => {
     if (a.length < 1) return [];
@@ -83,7 +83,18 @@ function RankingQuestionPanel({
         )}
       </div>
       {submitAnswer && (
-        <Button size="full" className="py-2 text-base">
+        <Button
+          size="full"
+          className="py-2 text-base"
+          onClick={() =>
+            submitAnswer?.({
+              type: "ranking",
+              rankedItems: rankings.map((item, i) => {
+                return { text: item.text, rank: i };
+              }),
+            })
+          }
+        >
           Submit
         </Button>
       )}
