@@ -26,15 +26,21 @@ function OptionQuestionPanel({
           className={cn(
             "grow  border  rounded-md flex flex-col justify-center items-center px-1 py-3",
             locked ? "opacity-50" : "",
-            selected === i ? "bg-rose-500/50 border-rose-500/30" : "bg-neutral-700/30 border-neutral-700/30"
+            selected === i || (!submitAnswer && option.correct)
+              ? "bg-rose-500/50 border-rose-500/30"
+              : "bg-neutral-700/30 border-neutral-700/30"
           )}
           key={i}
-          onClick={() => {
-            setSelected(i);
-            submitAnswer?.({ type: "option", selectedOptionIndex: i });
-          }}
+          onClick={
+            submitAnswer
+              ? () => {
+                  setSelected(i);
+                  submitAnswer({ type: "option", selectedOptionIndex: i });
+                }
+              : () => {}
+          }
         >
-          <div className="text-[10px] font-bold text-neutral-400/50">{status === "ended" ? "33%" : letters[i]}</div>
+          <div className="text-[10px] font-bold text-neutral-400/50">{letters[i]}</div>
           <div className="truncate">{option.text}</div>
         </button>
       ))}

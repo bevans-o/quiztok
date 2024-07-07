@@ -33,7 +33,7 @@ function QuestionPanel({
   const handleAnswerSubmission = (a: AnswerOption | AnswerSlider | AnswerRanking) => {
     // submit answer and update index - we can use the
     // index to determine if the current question has been submitted
-    submitAnswer?.(user, { questionIndex: number, answerType: a });
+    submitAnswer?.(user, { questionIndex: number, answerType: a, user: user });
     setLastSubmittedIndex(number);
   };
 

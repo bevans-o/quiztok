@@ -3,7 +3,7 @@ import { database as db } from "@/app/firebaseConfig"; // wherever the db is con
 import { Activity, QuizQuestion } from "./activity";
 import { Answer } from "./answer";
 import { Badge } from "./badge";
-import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
+import { onSnapshot, doc, setDoc, updateDoc, collection, query, getDocs, deleteDoc } from "firebase/firestore";
 import { checkAnswer } from "./answer";
 
 export type Stream = {
@@ -12,6 +12,7 @@ export type Stream = {
   activity?: Activity;
   currentQuestion: number;
   viewerCount: number;
+  questionPercentage: number;
   userAnswers: Map<string, Answer>; // Map from user ID to their Answer
   scores: LeaderboardData;
   badge?: Badge;
@@ -45,38 +46,62 @@ export function useStream(streamId: string) {
   };
 
   const endGuessing = async () => {
-    // TODO: handle leaderboard calculations
-    const sampleLeaderboard = {
-      will: 23,
-      jill: 15,
-      bill: 4,
-    };
+    if (!stream) return;
+    if (!stream.activity) return;
 
-    // Get the current stream data
-    const currentStream = stream;
-    if (!currentStream || !currentStream.userAnswers || !currentStream.activity) return;
+    // if the activity is over, update status and exit
+    if (stream.currentQuestion >= stream.activity.sections.length) {
+      updateStream({ questionStatus: "ended" });
+      return;
+    }
 
-    // Type assertion to ensure currentStream.activity is of type QuizActivity
-    const activity = currentStream.activity as Activity;
+    // fetch answers
+    let q = query(collection(db, "streams", streamId, "userAnswers"));
+    const docs = (await getDocs(q)).docs;
+    const userAnswers = docs.map((doc) => doc.data() as Answer);
 
-    // Iterate through the user answers
-    // ERROR: TypeError: currentStream.userAnswers.forEach is not a function
-    // i think we need to convert the object keys into an array first to use forEach
-    // currentStream.userAnswers.forEach((answer, userId) => {
-    //   // Check if the answer is correct
-    //   const isCorrect = checkAnswer(answer, activity, currentStream.currentQuestion);
-    //   // Update the leaderboard data
-    //   if (isCorrect) {
-    //     currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
-    //   }
-    // });
+    // update leaderboard
+    const { percentCorrect, scores } = updateLeaderboard(userAnswers) ?? { percentCorrect: 0, scores: {} };
 
     // Update the stream data with the new leaderboard
     updateStream({
+      questionPercentage: percentCorrect,
       questionStatus: "ended",
-      // scores: currentStream.scores,
-      scores: sampleLeaderboard, // temp sample scores
+      scores: scores,
     });
+  };
+
+  const updateLeaderboard = (userAnswers: Answer[]) => {
+    if (!stream) return;
+
+    if (!stream.activity) return;
+    if (stream.currentQuestion >= stream.activity.sections.length) return;
+
+    const scores = { ...stream.scores };
+    const question = stream.activity.sections[stream.currentQuestion];
+
+    let correctCount = 0;
+
+    userAnswers.forEach((answer) => {
+      // make typescript happy
+      if (!stream.activity) return;
+      const correct = checkAnswer(answer, stream.activity, stream.currentQuestion);
+
+      if (correct) {
+        // add points, or add entry if it doesn't exist yet
+        scores[answer.user] = scores[answer.user] ? scores[answer.user] + question.points : question.points;
+      } else if (!scores[answer.user]) {
+        // check to add user to scoreboard even if they get the question incorrect
+        scores[answer.user] = 0;
+      }
+
+      // clear answer
+      deleteDoc(doc(db, "streams", streamId, "userAnswers", answer.user));
+    });
+
+    const percentCorrect = correctCount / userAnswers.length;
+
+    return { percentCorrect, scores };
   };
 
   const changeQuestion = async () => {
@@ -86,22 +111,11 @@ export function useStream(streamId: string) {
   };
 
   const submitAnswer = (userId: string, answer: Answer) => {
-    console.log("NOT IMPLEMENTED: submitAnswer");
-    // updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
-    // ERROR: FirebaseError: No document to update: projects/quiztok-123c4/databases/(default)/documents/streams/ben/userAnswers/benjamin
-    // i think we need to check if the doc exists first? or use setDoc which might handle that itself?
+    console.log(`submitAnswer: user: ${userId}, answer: ${answer.answerType.type}`);
+    setDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
 
-    // Update stream state with new user answer
-    setStream((prevStream) => {
-      if (prevStream) {
-        return {
-          ...prevStream,
-          // userAnswers: new Map(prevStream.userAnswers).set(userId, answer),
-          // ERROR: TypeError: object is not iterable (cannot read property Symbol(Symbol.iterator))
-        };
-      }
-      return prevStream;
-    });
+    // as a shortcut (and to reduce rerenders) we won't update the state here
+    // we can store all the answers, then only query them when we need to check them
   };
 
   return { stream, endGuessing, changeQuestion, submitAnswer };
@@ -148,56 +162,3 @@ export async function getStreams(): Promise<Stream[]> {
 
   return [];
 }
-
-// hook to subscribe to current question
-
-// export function useCurrentQuestion(streamId: string) {
-//   const [currentQuestion, setCurrentQuestion] = useState<QuizQuestion | null>(null);
-
-//   useEffect(() => {
-//     // Subscribe to the real-time database changes for the current question
-//     const unsubscribe = db.ref(`quiz-activity/${streamId}/currentQuestion`).on("value", (snapshot: any) => {
-//       const data = snapshot.val();
-//       if (data) {
-//         setCurrentQuestion(data);
-//       }
-//     });
-
-//     // Cleanup the subscription when the component unmounts
-//     return () => {
-//       unsubscribe();
-//     };
-//   }, [streamId]);
-
-//   const updateCurrentQuestion = (question: QuizQuestion) => {
-//     db.ref(`quiz-activity/${streamId}/currentQuestion`).set(question);
-//   };
-
-//   return { currentQuestion, updateCurrentQuestion };
-// }
-
-// hook to get leaderboard
-// export function useLeaderboard(streamId: string) {
-//   const [leaderboardData, setLeaderboardData] = useState<LeaderboardData>({});
-
-//   useEffect(() => {
-//     // Subscribe to the real-time database changes for the answers and scores
-//     const unsubscribe = db.ref(`quiz-activity/${streamId}`).on("value", (snapshot: any) => {
-//       const data = snapshot.val();
-//       if (data) {
-//         setLeaderboardData(data);
-//       }
-//     });
-
-//     // Cleanup the subscription when the component unmounts
-//     return () => {
-//       unsubscribe();
-//     };
-//   }, [streamId]);
-
-//   const updateLeaderboardData = (newData: LeaderboardData) => {
-//     db.ref(`quiz-activity/${streamId}/answers`).set(newData);
-//   };
-
-//   return { leaderboardData, updateLeaderboardData };
-// }

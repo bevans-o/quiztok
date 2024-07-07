@@ -20,6 +20,7 @@ function Page({ params }: { params: { user: string } }) {
     activity: undefined,
     currentQuestion: -1,
     viewerCount: 0,
+    questionPercentage: 0,
     userAnswers: new Map(),
     scores: {},
     badge: undefined,

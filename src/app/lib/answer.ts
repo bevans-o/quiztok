@@ -1,6 +1,7 @@
 import { Activity } from "./activity";
 
 export type Answer = {
+  user: string;
   questionIndex: number;
   answerType: AnswerOption | AnswerSlider | AnswerRanking;
 };
@@ -20,6 +21,8 @@ export type AnswerRanking = {
   rankedItems: { text: string; rank: number }[];
 };
 
+const SLIDER_TOLERANCE = 5;
+
 export function checkAnswer(answer: Answer, activity: Activity, questionNo: number): boolean {
   // Get the current question from the activity data
   const currentQuestion = activity.sections[questionNo];
@@ -37,13 +40,13 @@ export function checkAnswer(answer: Answer, activity: Activity, questionNo: numb
       // For slider type questions, check if the answer matches the correct value
       if (answer.answerType.type === "slider") {
         const { correct } = currentQuestion;
-        return answer.answerType.selectedValue === correct;
+        return Math.abs(answer.answerType.selectedValue - correct) <= SLIDER_TOLERANCE;
       }
       return false;
     case "ranking":
       // For ranking type questions, check if the answer matches the correct order
       if (answer.answerType.type === "ranking") {
-        const correctOrder = currentQuestion.options.map((option) => option.key);
+        const correctOrder = currentQuestion.options.map((option) => option.text);
         const userOrder = answer.answerType.rankedItems.map((item) => item.text);
         return JSON.stringify(correctOrder) === JSON.stringify(userOrder);
       }
