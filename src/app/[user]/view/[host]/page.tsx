@@ -51,5 +51,3 @@ function Page({ params }: { params: { user: string; host: string } }) {
     </StreamView>
   );
 }
-
-export default Page;

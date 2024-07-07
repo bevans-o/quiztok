@@ -4,6 +4,7 @@ import { Activity, QuizQuestion } from "./activity";
 import { Answer } from "./answer";
 import { Badge } from "./badge";
 import { onSnapshot, doc, setDoc, updateDoc } from "firebase/firestore";
+import { checkAnswer } from "./answer";
 
 export type Stream = {
   host: string;
@@ -53,20 +54,28 @@ export function useStream(streamId: string) {
 
     // Get the current stream data
     const currentStream = stream;
-    if (!currentStream || !currentStream.userAnswers) return;
+    if (!currentStream || !currentStream.userAnswers || !currentStream.activity)
+      return;
+
+    // Type assertion to ensure currentStream.activity is of type QuizActivity
+    const activity = currentStream.activity as Activity;
 
     // Iterate through the user answers
-    // currentStream.userAnswers.forEach((answer, userId) => { // TypeError: currentStream.userAnswers.forEach is not a function
-    // Check if the answer is correct
-    // const isCorrect = /* some logic to check if the answer is correct */
-    // Update the leaderboard data
-    // if (isCorrect) {
-    //   currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
-    // }
-    // });
+    currentStream.userAnswers.forEach((answer, userId) => {
+      // Check if the answer is correct
+      const isCorrect = checkAnswer(
+        answer,
+        activity,
+        currentStream.currentQuestion
+      ); 
+      // Update the leaderboard data
+      if (isCorrect) {
+        currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
+      }
+    });
 
     // Update the stream data with the new leaderboard
-    await updateStream({
+    updateStream({
       questionStatus: "ended",
       // scores: currentStream.scores,
       scores: sampleLeaderboard, // temp sample scores
