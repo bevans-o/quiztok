@@ -10,7 +10,16 @@ function MobileFrame({ children }: { children?: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="hidden sm:block absolute top-2 left-2 font-bold text-neutral-600">QuizTok</div>
+      <div className="hidden sm:block absolute top-2 left-2 text-neutral-600">
+        <div className="font-bold">QuizTok</div>
+        <div className="flex flex-col gap-[2px] pt-2">
+          <div className="text-xs">Laura Yang</div>
+          <div className="text-xs">James Lee</div>
+          <div className="text-xs">Cathy Wang</div>
+          <div className="text-xs">Bobo Lau</div>
+          <div className="text-xs">Ben Evans</div>
+        </div>
+      </div>
     </main>
   );
 }
