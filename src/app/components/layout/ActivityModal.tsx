@@ -33,7 +33,7 @@ function ActivityModal({
     getBadges(user).then((res) => {
       setBadges(res);
     });
-  }, [setActivities, setBadges]);
+  }, [setActivities, setBadges, user]);
 
   return (
     <ModalWindow onClose={onClose}>
