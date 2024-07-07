@@ -48,8 +48,8 @@ function Page({ params }: { params: { user: string } }) {
       {modalOpen && (
         <ActivityModal
           user={params.user}
-          onSelect={(a, b) => {
-            setStream({ ...stream, activity: a, badge: b });
+          onSelect={(a, b, c) => {
+            setStream({ ...stream, activity: a, badge: b, condition: c });
             setModalOpen(false);
           }}
           onClose={() => setModalOpen(false)}
