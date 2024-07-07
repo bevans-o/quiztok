@@ -178,3 +178,57 @@ export async function postStream(stream: Stream) {
 
 //   return { leaderboardData, updateLeaderboardData };
 // }
+
+export async function assignBadge(stream: Stream) {
+  const badge = stream.badge
+  if (badge) {
+    const sortedUsers: Record<string, number> = Object.fromEntries(
+      Object.entries(stream.scores).sort((a, b) => b[1] - a[1])
+    );
+    let badgeHolders: string[] = [];
+
+    if (badge.condition == "Top Scorer") {
+      for (let user in sortedUsers) {
+        if (stream.scores[user] < sortedUsers[0].valueOf()) {
+          continue
+        }
+        else if (stream.scores[user] === sortedUsers[0].valueOf()) {
+          badgeHolders.push(user);
+        }
+        else {
+          break
+        }
+      }
+      
+    }
+
+    else if (badge.condition == "Top Three") {
+      let count = 0
+      for (let user in sortedUsers) {
+        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 3) {
+          badgeHolders.push(user);
+          count += 1
+        }
+        else {
+          break
+        }
+      }
+    }
+
+    else if (badge.condition == "Top Three") {
+      let count = 0
+      for (let user in sortedUsers) {
+        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 5) {
+          badgeHolders.push(user);
+          count += 1
+        }
+        else {
+          break
+        }
+      }
+    }
+
+  }
+  
+}
+

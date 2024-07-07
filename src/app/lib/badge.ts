@@ -1,10 +1,12 @@
 export type Colour = "red" | "rose" | "blue" | "green" | "yellow" | "teal" | "purple";
 export type Icon = "star" | "heart" | "flower";
+export type Condition = "Top Scorer" | "Top Three" | "Top Five"
 
 export type Badge = {
   author: string;
   name: string;
   id: string;
+  condition: string;
   colour: Colour;
   icon: Icon;
 };
