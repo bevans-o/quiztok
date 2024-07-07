@@ -33,7 +33,7 @@ function SummaryScreen({ stream, user, onEnd }: { stream: Stream; user: string; 
             </div>
             <div className="flex flex-wrap gap-4 justify-center">
               {winners.map((winner) => (
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1" key={winner}>
                   <div>{winner}</div>
                   <Badge {...stream.badge} size={"small"} />
                 </div>
@@ -45,7 +45,7 @@ function SummaryScreen({ stream, user, onEnd }: { stream: Stream; user: string; 
         <div className="flex flex-col bg-neutral-950/30 rounded-md p-2 w-full">
           <div className="w-full uppercase font-semibold text-sm text-neutral-400 text-center pb-2">Leaderboard</div>
           {topFive.map((score, i) => (
-            <div className="w-full flex gap-1">
+            <div className="w-full flex gap-1" key={score.name}>
               <ScorePellet rank={i + 1} name={score.name} score={score.score} highlight={score.name === user} grow />
             </div>
           ))}
