@@ -4,9 +4,11 @@ import Badge from "@/app/components/ui/Badge";
 import PageHeader from "@/app/components/ui/PageHeader";
 import React, { useState } from "react";
 import { Badge as BadgeType, Colour, postBadge } from "@/app/lib/badge";
+import { Stream, BadgeCondition } from "@/app/lib/stream";
 import { cn } from "@/app/lib/util";
 import Button from "@/app/components/ui/Button";
 import { useRouter } from "next/navigation";
+import stream from "stream";
 
 function Page({ params }: { params: { user: string } }) {
   const router = useRouter();

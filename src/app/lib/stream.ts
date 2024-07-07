@@ -72,7 +72,7 @@ export function useStream(streamId: string) {
       questionPercentage: percentCorrect,
       questionStatus: "ended",
       scores: scores,
-    });
+          });
   };
 
   const updateLeaderboard = (userAnswers: Answer[]) => {
@@ -129,7 +129,7 @@ export function useStream(streamId: string) {
   const submitAnswer = (userId: string, answer: Answer) => {
     console.log(`submitAnswer: user: ${userId}, answer: ${answer.answerType.type}`);
     setDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
-
+    
     // as a shortcut (and to reduce rerenders) we won't update the state here
     // we can store all the answers, then only query them when we need to check them
   };
@@ -172,7 +172,7 @@ export async function getStreams(): Promise<Stream[]> {
       console.error("Failed to get streams: ", response.statusText);
       return [];
     }
-  } catch (error) {
+        } catch (error) {
     console.error("Error getting streams: ", error);
   }
 

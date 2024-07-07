@@ -1,5 +1,4 @@
 import { Badge } from "./badge";
-import { Stream } from "./stream";
 
 // username and badge id
 export type BadgeOwner = {

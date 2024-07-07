@@ -10,6 +10,8 @@ import Subheading from "../ui/typography/Subheading";
 import Button from "../ui/Button";
 import Badge from "../ui/Badge";
 import { cn } from "@/app/lib/util";
+import ToggleBubbles from "../ui/ToggleBubbles";
+import { BadgeCondition, Stream, getStreams } from "@/app/lib/stream";
 
 function ActivityModal({
   user,
@@ -22,8 +24,11 @@ function ActivityModal({
 }) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [badges, setBadges] = useState<BadgeType[]>([]);
+  const [badgeConditions, setBadgeConditions] = useState<BadgeCondition>();
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | undefined>(undefined);
+  const [selectedBadgeCondition, setSelectedBadgeCondition] = useState<Stream | null>(null);
+  const conditions = ["Top Scorer", "Top Three", "Top Five"]
 
   useEffect(() => {
     getActivities(user).then((res) => {
@@ -33,6 +38,7 @@ function ActivityModal({
     getBadges(user).then((res) => {
       setBadges(res);
     });
+
   }, [setActivities, setBadges, user]);
 
   return (
@@ -119,6 +125,14 @@ function ActivityModal({
                 </button>
               )}
             </div>
+            <div className="flex gap-1 flex-wrap items-center">
+            {conditions.map((badgeCondition, i) => (
+                <div onClick={() => setSelectedBadgeCondition(badgeCondition)} key={i}>
+                  <ToggleBubbles options={badgeConditions} selected={selectedBadgeCondition} />
+                </div>
+              ))}
+            </div>
+
           </div>
         )}
 
@@ -129,7 +143,7 @@ function ActivityModal({
         </div> */}
 
         <div className="w-full">
-          <Button size={"full"} onClick={() => onSelect(selectedActivity, selectedBadge)}>
+          <Button size={"full"} onClick={() => onSelect(selectedActivity, selectedBadge, selectedBadgeCondition)}>
             Save
           </Button>
         </div>
