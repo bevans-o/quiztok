@@ -15,7 +15,7 @@ function ToggleBubbles({
   if (options.length < 1) return null;
 
   return (
-    <div className="w-full overflow-x-scroll py-4">
+    <div className="w-full overflow-x-scroll py-2">
       <div className="flex gap-2 px-6 w-fit">
         {options.map((option, index) => (
           <button

@@ -19,16 +19,16 @@ function ActivityModal({
   onClose = () => {},
 }: {
   user?: string;
-  onSelect?: (a: Activity | undefined, b: BadgeType | undefined) => void;
+  onSelect?: (a: Activity | undefined, b: BadgeType | undefined, c: BadgeCondition) => void;
   onClose?: () => void;
 }) {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [badges, setBadges] = useState<BadgeType[]>([]);
-  const [badgeConditions, setBadgeConditions] = useState<BadgeCondition>();
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [selectedBadge, setSelectedBadge] = useState<BadgeType | undefined>(undefined);
-  const [selectedBadgeCondition, setSelectedBadgeCondition] = useState<Stream | null>(null);
-  const conditions = ["Top Scorer", "Top Three", "Top Five"]
+  const [selectedBadgeCondition, setSelectedBadgeCondition] = useState<BadgeCondition>("Top Scorer");
+
+  const conditions = ["Top Scorer", "Top Three", "Top Five"];
 
   useEffect(() => {
     getActivities(user).then((res) => {
@@ -38,7 +38,6 @@ function ActivityModal({
     getBadges(user).then((res) => {
       setBadges(res);
     });
-
   }, [setActivities, setBadges, user]);
 
   return (
@@ -57,7 +56,7 @@ function ActivityModal({
             </Link>
           </div>
 
-          <div className="overflow-y-scroll grow max-h-[24rem]">
+          <div className="overflow-y-scroll grow max-h-[20rem]">
             <div className="flex flex-col gap-1 ">
               <button
                 onClick={() => {
@@ -78,7 +77,7 @@ function ActivityModal({
           </div>
 
           {activities.length > 4 && (
-            <div className="w-full absolute bottom-0 h-12 bg-gradient-to-t from-white to-white/0" />
+            <div className="w-full absolute bottom-0 h-8 bg-gradient-to-t from-white to-white/0 pointer-events-none" />
           )}
         </div>
 
@@ -87,7 +86,7 @@ function ActivityModal({
             <div className="flex justify-between gap-1">
               <div className="flex flex-col">
                 <Subheading>Select a badge</Subheading>
-                <Detail>The activity winner receives this badge.</Detail>
+                <Detail>The activity winners receive this badge.</Detail>
               </div>
 
               <Link
@@ -100,39 +99,39 @@ function ActivityModal({
               </Link>
             </div>
 
-            <div className="flex gap-1 flex-wrap items-center">
-              {badges.map((badge, i) => (
-                <div
-                  key={i}
-                  onClick={() => setSelectedBadge(badge)}
-                  className={cn(
-                    "p-[2px] border-2 rounded-full cursor-pointer",
-                    badge.id === selectedBadge?.id ? "border-rose-500" : "border-transparent"
-                  )}
-                >
-                  <Badge {...badge} size="large" />
-                </div>
-              ))}
-
-              {badges.length > 0 && (
-                <button
-                  className="flex justify-center items-center w-6 h-6 rounded-full text-neutral-400 border border-neutral-300 font-medium text-xs hover:text-neutral-500 transition-colors"
-                  onClick={() => setSelectedBadge(undefined)}
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 17 18" fill="none">
-                    <path d="M1 1.5L16 16.5M16 1.5L0.999968 16.5" stroke="currentColor" strokeWidth="3" />
-                  </svg>
-                </button>
-              )}
+            <div className="w-full overflow-scroll">
+              <div className="flex gap-0 items-center w-fit">
+                {badges.length > 0 && (
+                  <button
+                    className="flex justify-center items-center w-6 h-6 rounded-full text-neutral-400 border border-neutral-300 font-medium text-xs hover:text-neutral-500 transition-colors"
+                    onClick={() => setSelectedBadge(undefined)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 17 18" fill="none">
+                      <path d="M1 1.5L16 16.5M16 1.5L0.999968 16.5" stroke="currentColor" strokeWidth="3" />
+                    </svg>
+                  </button>
+                )}
+                {badges.map((badge, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedBadge(badge)}
+                    className={cn(
+                      "p-[2px] border-2 rounded-full cursor-pointer",
+                      badge.id === selectedBadge?.id ? "border-rose-500" : "border-transparent"
+                    )}
+                  >
+                    <Badge {...badge} size="large" />
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-1 flex-wrap items-center">
-            {conditions.map((badgeCondition, i) => (
-                <div onClick={() => setSelectedBadgeCondition(badgeCondition)} key={i}>
-                  <ToggleBubbles options={badgeConditions} selected={selectedBadgeCondition} />
-                </div>
-              ))}
+            <div className="w-80 -translate-x-4">
+              <ToggleBubbles
+                options={conditions}
+                selected={selectedBadgeCondition}
+                onSelect={(value) => setSelectedBadgeCondition(value as BadgeCondition)}
+              />
             </div>
-
           </div>
         )}
 
