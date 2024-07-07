@@ -54,25 +54,22 @@ export function useStream(streamId: string) {
 
     // Get the current stream data
     const currentStream = stream;
-    if (!currentStream || !currentStream.userAnswers || !currentStream.activity)
-      return;
+    if (!currentStream || !currentStream.userAnswers || !currentStream.activity) return;
 
     // Type assertion to ensure currentStream.activity is of type QuizActivity
     const activity = currentStream.activity as Activity;
 
     // Iterate through the user answers
-    currentStream.userAnswers.forEach((answer, userId) => {
-      // Check if the answer is correct
-      const isCorrect = checkAnswer(
-        answer,
-        activity,
-        currentStream.currentQuestion
-      ); 
-      // Update the leaderboard data
-      if (isCorrect) {
-        currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
-      }
-    });
+    // ERROR: TypeError: currentStream.userAnswers.forEach is not a function
+    // i think we need to convert the object keys into an array first to use forEach
+    // currentStream.userAnswers.forEach((answer, userId) => {
+    //   // Check if the answer is correct
+    //   const isCorrect = checkAnswer(answer, activity, currentStream.currentQuestion);
+    //   // Update the leaderboard data
+    //   if (isCorrect) {
+    //     currentStream.scores[userId] = (currentStream.scores[userId] || 0) + 1;
+    //   }
+    // });
 
     // Update the stream data with the new leaderboard
     updateStream({
@@ -90,14 +87,17 @@ export function useStream(streamId: string) {
 
   const submitAnswer = (userId: string, answer: Answer) => {
     console.log("NOT IMPLEMENTED: submitAnswer");
-    updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+    // updateDoc(doc(db, "streams", streamId, "userAnswers", userId), answer);
+    // ERROR: FirebaseError: No document to update: projects/quiztok-123c4/databases/(default)/documents/streams/ben/userAnswers/benjamin
+    // i think we need to check if the doc exists first? or use setDoc which might handle that itself?
 
     // Update stream state with new user answer
     setStream((prevStream) => {
       if (prevStream) {
         return {
           ...prevStream,
-          userAnswers: new Map(prevStream.userAnswers).set(userId, answer),
+          // userAnswers: new Map(prevStream.userAnswers).set(userId, answer),
+          // ERROR: TypeError: object is not iterable (cannot read property Symbol(Symbol.iterator))
         };
       }
       return prevStream;
