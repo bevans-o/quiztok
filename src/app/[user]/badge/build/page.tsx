@@ -11,7 +11,13 @@ import { useRouter } from "next/navigation";
 function Page({ params }: { params: { user: string } }) {
   const router = useRouter();
 
-  const [badge, setBadge] = useState<BadgeType>({ name: "", icon: "heart", colour: "red", author: params.user });
+  const [badge, setBadge] = useState<BadgeType>({
+    name: "",
+    icon: "heart",
+    colour: "red",
+    author: params.user,
+    id: "",
+  });
   const colours = ["red", "rose", "blue", "green", "yellow", "teal", "purple"];
 
   return (
