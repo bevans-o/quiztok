@@ -3,27 +3,30 @@ import { cn } from "@/app/lib/util";
 import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 
-const badgeVariants = cva("flex justify-center items-center pr-2 pl-1 border rounded-full w-fit select-none", {
-  variants: {
-    colour: {
-      red: "bg-red-600 text-neutral-50 border-red-500",
-      rose: "bg-rose-600 text-neutral-50 border-rose-500",
-      blue: "bg-blue-600 text-neutral-50 border-blue-500",
-      green: "bg-green-600 text-neutral-50 border-green-500",
-      yellow: "bg-yellow-600 text-neutral-50 border-yellow-500",
-      teal: "bg-teal-600 text-neutral-50 border-teal-500",
-      purple: "bg-purple-600 text-neutral-50 border-purple-500",
+const badgeVariants = cva(
+  "flex justify-center items-center pr-2 pl-1 border rounded-full w-fit select-none text-nowrap",
+  {
+    variants: {
+      colour: {
+        red: "bg-red-600 text-neutral-50 border-red-500",
+        rose: "bg-rose-600 text-neutral-50 border-rose-500",
+        blue: "bg-blue-600 text-neutral-50 border-blue-500",
+        green: "bg-green-600 text-neutral-50 border-green-500",
+        yellow: "bg-yellow-600 text-neutral-50 border-yellow-500",
+        teal: "bg-teal-600 text-neutral-50 border-teal-500",
+        purple: "bg-purple-600 text-neutral-50 border-purple-500",
+      },
+      size: {
+        large: "text-sm gap-[3px] py-[2px]",
+        small: "text-[10px] gap-[2px] py-[0px]",
+      },
     },
-    size: {
-      large: "text-sm gap-[3px] py-[2px]",
-      small: "text-[10px] gap-[2px] py-[0px]",
+    defaultVariants: {
+      colour: "red",
+      size: "large",
     },
-  },
-  defaultVariants: {
-    colour: "red",
-    size: "large",
-  },
-});
+  }
+);
 
 const iconVariants = cva("p-[1px]", {
   variants: {
