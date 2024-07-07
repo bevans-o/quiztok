@@ -36,6 +36,7 @@ export async function getUserBadges(user: string): Promise<Badge[]> {
     });
     if (response.ok) {
       const badges = await response.json();
+      console.log(badges);
       return badges as Badge[];
     } else {
       console.error("Failed to get badges: ", response.statusText);

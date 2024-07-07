@@ -23,15 +23,18 @@ export async function GET(request: Request) {
 
   const badges: Badge[] = [];
 
-  await badgeLinks.forEach(async (link) => {
+  const promises = badgeLinks.map((link) => {
     const ref = doc(db, `badges/${link.id}`);
-    getDoc(ref).then((snapshot) => {
+    return getDoc(ref).then((snapshot) => {
       if (snapshot.exists()) {
+        console.log("Found it!");
         const badge = snapshot.data() as Badge;
         badges.push(badge);
       }
     });
   });
+
+  await Promise.all(promises);
 
   return Response.json(badges);
 }
