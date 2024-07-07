@@ -3,6 +3,7 @@ import { Badge } from "@/app/lib/badge";
 import { BadgeOwner } from "@/app/lib/badge-owner";
 import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const badgeOwner = (await request.json()) as BadgeOwner;
   if (!badgeOwner.id) {

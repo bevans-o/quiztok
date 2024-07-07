@@ -2,6 +2,7 @@ import { database as db } from "@/app/firebaseConfig";
 import { Badge } from "@/app/lib/badge";
 import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");

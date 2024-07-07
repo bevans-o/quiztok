@@ -1,6 +1,7 @@
 import { database as db } from "@/app/firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
+export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const author = searchParams.get("author");
