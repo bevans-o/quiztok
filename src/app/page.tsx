@@ -11,7 +11,7 @@ export default function Home() {
     return s
       .split("")
       .filter((c) => c != " ")
-      .join();
+      .join("");
   };
 
   return (
