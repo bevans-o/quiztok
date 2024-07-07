@@ -1,64 +1,13 @@
+import { Badge } from "./badge";
 import { Stream } from "./stream";
 
 // username and badge id
-export type badgeOwner = {
+export type BadgeOwner = {
   name: string;
   id: string;
 };
 
-export async function getUserBadge(stream: Stream) {
-  const badge = stream.badge
-  if (badge) {
-    const sortedUsers: Record<string, number> = Object.fromEntries(
-      Object.entries(stream.scores).sort((a, b) => b[1] - a[1])
-    );
-    let badgeHolders: string[] = [];
-
-    if (badge.condition == "Top Scorer") {
-      for (let user in sortedUsers) {
-        if (stream.scores[user] < sortedUsers[0].valueOf()) {
-          continue
-        }
-        else if (stream.scores[user] === sortedUsers[0].valueOf()) {
-          badgeHolders.push(user);
-        }
-        else {
-          break
-        }
-      }
-      
-    }
-
-    else if (badge.condition == "Top Three") {
-      let count = 0
-      for (let user in sortedUsers) {
-        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 3) {
-          badgeHolders.push(user);
-          count += 1
-        }
-        else {
-          break
-        }
-      }
-    }
-
-    else if (badge.condition == "Top Three") {
-      let count = 0
-      for (let user in sortedUsers) {
-        if (stream.scores[user] <= sortedUsers[0].valueOf() && count < 5) {
-          badgeHolders.push(user);
-          count += 1
-        }
-        else {
-          break
-        }
-      }
-    }
-    return [badgeHolders];
-  }
-}
-
-export async function assignBadge(badgeOwner: badgeOwner) {
+export async function assignBadge(badgeOwner: BadgeOwner) {
   try {
     const response = await fetch("/api/badge-owner", {
       method: "POST",
@@ -75,4 +24,26 @@ export async function assignBadge(badgeOwner: badgeOwner) {
   } catch (error) {
     console.error("Error assigning badge:", error);
   }
-}  
+}
+
+export async function getUserBadges(user: string): Promise<Badge[]> {
+  try {
+    const response = await fetch(`/api/badge-owner?user=${user}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      const badges = await response.json();
+      return badges as Badge[];
+    } else {
+      console.error("Failed to get badges: ", response.statusText);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error getting badges: ", error);
+  }
+
+  return [];
+}
