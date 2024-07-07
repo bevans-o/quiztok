@@ -1,23 +1,15 @@
 import { database as db } from "@/app/firebaseConfig";
 import { Badge } from "@/app/lib/badge";
 import { BadgeOwner } from "@/app/lib/badge-owner";
-import { addDoc, collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 
 export const dynamic = "force-dynamic";
 export async function POST(request: Request) {
   const badgeOwner = (await request.json()) as BadgeOwner;
-  if (!badgeOwner.id) {
-    const snapshot = await addDoc(collection(db, "badge-owner"), badgeOwner);
-    const updateRef = doc(db, "badge-owner", snapshot.id);
-    await updateDoc(updateRef, { id: snapshot.id });
 
-    return Response.json({ id: snapshot.id });
-  } else {
-    const updateRef = doc(db, "badge-owner", badgeOwner.id);
-    await updateDoc(updateRef, badgeOwner);
+  await addDoc(collection(db, "badge-owner"), badgeOwner);
 
-    return Response.json({ id: badgeOwner.id });
-  }
+  return Response.json({ id: badgeOwner.id });
 }
 
 export async function GET(request: Request) {
