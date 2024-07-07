@@ -9,6 +9,7 @@ import Leaderboard from "@/app/components/ui/quiz/Leaderboard";
 import QuestionPanel from "@/app/components/ui/quiz/QuestionPanel";
 import SummaryScreen from "@/app/components/ui/quiz/SummaryScreen";
 import { useStream } from "@/app/lib/stream";
+import Link from "next/link";
 import React from "react";
 
 function Page({ params }: { params: { user: string; host: string } }) {
@@ -23,11 +24,11 @@ function Page({ params }: { params: { user: string; host: string } }) {
         <div className="flex w-full justify-between items-center">
           <UserCapsule user={params.host} detail="0 likes" />
 
-          <div>
+          <Link href={`/${params.user}/view`}>
             <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e8eaed">
               <path d="M291-253.85 253.85-291l189-189-189-189L291-706.15l189 189 189-189L706.15-669l-189 189 189 189L669-253.85l-189-189-189 189Z" />
             </svg>
-          </div>
+          </Link>
         </div>
 
         {activityActive && <Leaderboard stream={stream} />}
